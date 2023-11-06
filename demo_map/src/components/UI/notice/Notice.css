@@ -1,0 +1,155 @@
+.notice {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+.org_left {
+    width: 45vw;
+}
+.org_rigth {
+    width: 45vw;
+}
+
+.poisk {
+    margin: 5px 0;
+}
+
+.org_cart {
+    border: 1px solid #884000;
+    border-radius: 30px;
+    padding: 10px 25px 15px 15px; 
+    background-color: #F3BE8E;
+    height: 80vh;
+
+    overflow-y: auto;
+}
+.name_text {
+    font-family: 'Times New Roman';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 23px;
+    /* word-wrap: break-word; */
+    color: #884000;
+
+}
+
+.mini_text {
+    font-size: 18px;
+    line-height: 20px;
+    margin-top: 3px;
+
+}
+
+.stroka {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.stroka_2 {
+    margin: 0 5px;
+    
+}
+
+.add_type {
+    display: flex;
+    flex-direction: column;
+}
+
+.add_type > label, .category_org > label, .stroka > label {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 30px;
+    box-shadow: 0 0 5px 5px #F3BE8E inset;
+}
+
+.add_categ {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn_add_org {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5px;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+.list_org_notice {
+    display: flex;
+    flex-direction: column;
+    height: 35vh;
+
+    overflow-y: auto;
+}
+
+.list_org_notice::-webkit-scrollbar {
+    width: 15px;     
+}
+  
+.list_org_notice::-webkit-scrollbar {
+    background: rgba(255, 255, 255, 0.67); 
+    border-radius: 30px;   
+
+}
+  
+.list_org_notice::-webkit-scrollbar {
+    background-color: #62D4E3;    
+    border-radius: 30px;       
+    border: 3px solid rgba(255, 255, 255, 0.67);  
+}
+
+.btn_del_users {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-top: 10px;
+
+}
+
+.org_cart::-webkit-scrollbar {
+    width: 15px;    
+}
+  
+.org_cart::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.67); 
+    border-radius: 30px;   
+
+}
+  
+.org_cart::-webkit-scrollbar-thumb {
+    background-color: #62D4E3;    
+    border-radius: 30px;       
+    border: 3px solid rgba(255, 255, 255, 0.67);  
+}
+
+.notice_cart {
+    border: 1px solid #884000;
+    border-radius: 30px;
+    padding: 10px 25px 15px 15px; 
+    background-color: #F3BE8E;
+    height: auto;
+    margin-top: 15px;
+    overflow-y: auto;
+}
+
+.notice_text {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 30px;
+    box-shadow: 0 0 5px 5px #F3BE8E inset;
+}
+
+.stroka_notice {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+}
