@@ -47,9 +47,9 @@ export const fetchOrg = async (typeName, catName, statusName, localityName) => {
   }
 };
 
-export const fetcOneOrg = async (id) => {
+export const fetchSpisokCats = async () => {
   try {
-    const { data } = await $host.get("api/org/" + id);
+    const { data } = await $host.get("api/spisokCats");
     return data;
   } catch (err) {
     return [];
