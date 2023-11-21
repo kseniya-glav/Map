@@ -20,15 +20,17 @@ const PlacemarkUI = observer(() => {
 
   return (
     <div>
-      {organization.org.map((org) =>
-        activeCategory.length === 0 &&
-        organization.selectedCategory.length === 0 ? (
-          <Placemark geometry={org.coordinates} />
-        ) : (
-          activeCategory.includes(org.name) && (
+      {organization.org.map(
+        (org) =>
+          organization.checkedOrg.includes(org.typeOrgName) &&
+          (activeCategory.length === 0 &&
+          organization.selectedCategory.length === 0 ? (
             <Placemark geometry={org.coordinates} />
-          )
-        )
+          ) : (
+            activeCategory.includes(org.name) && (
+              <Placemark geometry={org.coordinates} />
+            )
+          ))
       )}
     </div>
   );

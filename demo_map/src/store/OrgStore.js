@@ -10,6 +10,7 @@ export default class OrgStore {
     this._locality = [];
     this._selectedLocality = [];
     this._org = [];
+    this._checkedOrg = ["Государственная", "Некоммерческая"];
     makeAutoObservable(this);
   }
 
@@ -54,6 +55,14 @@ export default class OrgStore {
     this._org = org;
   }
 
+  setCheckedOrg(checkedOrg) {
+    this._checkedOrg.push(checkedOrg);
+  }
+
+  removeCheckedOrg(checkedOrg) {
+    this._checkedOrg = this._checkedOrg.filter((item) => item !== checkedOrg);
+  }
+
   setLocality(locality) {
     this._locality = locality;
   }
@@ -88,5 +97,9 @@ export default class OrgStore {
 
   get org() {
     return this._org;
+  }
+
+  get checkedOrg() {
+    return this._checkedOrg;
   }
 }

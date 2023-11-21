@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import FilterButton from "../buttonFilter/FilterButton";
 import "./FilterMap.css";
 import { observer } from "mobx-react-lite";
@@ -6,25 +6,28 @@ import { Context } from "../../../index";
 
 const FilterMap = observer(() => {
   const { organization } = useContext(Context);
+  const [checkedStateOrganization, setCheckedStateOrganization] =
+    useState(true);
+  const [checkedNonProfitOrganization, setCheckedNonProfitOrganization] =
+    useState(true);
 
-  //const type_organization = [ 'Государственная', 'Некоммерческая']
-  // const category = ['Бесплатные (или дешевле, чем в магазинах) одежда и предметы первой необходимости',
-  //             'Бесплатные продукты или готовая еда',
-  //             'Бесплатная юридическая консультация',
-  //             'Бесплатная психологическая помощь',
-  //             'Кризисное жилье',
-  //             'Социальное сопровождение',
-  //             'Льготы и пособия',
-  //             'Профессиональное обучение',
-  //             'Бесплатное предоставление витаминов',
-  //             'Социальный прокат средств безопасности',
-  //             'todsvdbv',
-  //             'fhbfgndfgn',
-  //             'fbdfndb',
-  //             'todsvdbv',
-  //             'fhbfgndfgn',
-  //             'fbdfndb'
-  //         ]
+  function handleChangeStateOrganization() {
+    setCheckedStateOrganization(!checkedStateOrganization);
+    edidCheckedOrg(!checkedStateOrganization, "Государственная");
+  }
+
+  function handleChangeNonProfitOrganization() {
+    setCheckedNonProfitOrganization(!checkedNonProfitOrganization);
+    edidCheckedOrg(!checkedNonProfitOrganization, "Некоммерческая");
+  }
+
+  function edidCheckedOrg(checked, checkedOrg) {
+    if (checked) {
+      organization.setCheckedOrg(checkedOrg);
+    } else {
+      organization.removeCheckedOrg(checkedOrg);
+    }
+  }
 
   return (
     <div className="filter_map">
@@ -34,6 +37,16 @@ const FilterMap = observer(() => {
             <input
               type="checkbox"
               className="check_type"
+              checked={
+                type.name === "Государственная"
+                  ? checkedStateOrganization
+                  : checkedNonProfitOrganization
+              }
+              onChange={
+                type.name === "Государственная"
+                  ? handleChangeStateOrganization
+                  : handleChangeNonProfitOrganization
+              }
               value={type.name}
               key={type.id}
             />

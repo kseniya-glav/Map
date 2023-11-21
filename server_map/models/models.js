@@ -3,56 +3,52 @@ const {DataTypes} = require('sequelize')
 
 const User = sequelize.define('user', {
     id: {type: DataTypes.INTEGER, autoIncrement: true},
-    email: {type: DataTypes.STRING, primaryKey: true, unique: true},
+    email: {type: DataTypes.STRING, primaryKey: true, unique: true, allowNull: false},
     phone: {type: DataTypes.STRING},
     fio: {type: DataTypes.STRING},
-    roleName: {type: DataTypes.STRING},
-    password: {type: DataTypes.STRING}
+    roleName: {type: DataTypes.STRING, allowNull: false},
+    password: {type: DataTypes.STRING},
+    hashpassword: {type: DataTypes.STRING}
 })
 
 const Role = sequelize.define('role', {
     id: {type: DataTypes.INTEGER, autoIncrement: true},
-    name: {type: DataTypes.STRING, primaryKey: true, unique: true},
+    name: {type: DataTypes.STRING, primaryKey: true, unique: true, allowNull: false},
 })
 
 const Organization = sequelize.define('organization', {
     id: {type: DataTypes.INTEGER, autoIncrement: true},
-    name: {type: DataTypes.STRING, primaryKey: true, unique: true},
+    name: {type: DataTypes.STRING, primaryKey: true, unique: true, allowNull: false},
     localityName: {type: DataTypes.STRING},
+    street: {type: DataTypes.STRING},
     numb_house: {type: DataTypes.INTEGER},
     numb_housing: {type: DataTypes.INTEGER},
     numb_flat: {type: DataTypes.INTEGER},
     typeOrgName: {type: DataTypes.STRING},
     fio_director: {type: DataTypes.STRING},
-    email: {type: DataTypes.STRING},
-    phone: {type: DataTypes.STRING},
-    work_schedule: {type: DataTypes.ARRAY(DataTypes.TIME)},
+    email: {type: DataTypes.STRING, allowNull: false},
+    phone: {type: DataTypes.STRING, allowNull: false},
+    work_schedule: {type: DataTypes.JSON},
     additional_data: {type: DataTypes.TEXT},
-    coordinates: {type: DataTypes.ARRAY(DataTypes.FLOAT)},
-    statusName: {type: DataTypes.STRING},
-    email_notifications: {type: DataTypes.STRING}
+    coordinates: {type: DataTypes.ARRAY(DataTypes.FLOAT), allowNull: false},
+    statusName: {type: DataTypes.BOOLEAN, allowNull: false},
 })
 
 const Locality = sequelize.define('locality', {
     id: {type: DataTypes.INTEGER, autoIncrement: true},
-    name: {type: DataTypes.STRING, primaryKey: true, unique: true},
-    coordinates: {type: DataTypes.ARRAY(DataTypes.FLOAT)}
+    name: {type: DataTypes.STRING, primaryKey: true, unique: true, allowNull: false},
+    coordinates: {type: DataTypes.ARRAY(DataTypes.FLOAT), allowNull: false}
 })
 
 const Type_org = sequelize.define('type_org', {
     id: {type: DataTypes.INTEGER, autoIncrement: true},
-    name: {type: DataTypes.STRING, primaryKey: true, unique: true},
+    name: {type: DataTypes.STRING, primaryKey: true, unique: true, allowNull: false},
 })
 
 const Category = sequelize.define('category', {
     id: {type: DataTypes.INTEGER, autoIncrement: true},
-    name: {type: DataTypes.STRING, primaryKey: true, unique: true},
-    color: {type: DataTypes.STRING}
-})
-
-const Status = sequelize.define('status', {
-    id: {type: DataTypes.INTEGER, autoIncrement: true},
-    name: {type: DataTypes.STRING, primaryKey: true, unique: true},
+    name: {type: DataTypes.STRING, primaryKey: true, unique: true, allowNull: false},
+    color: {type: DataTypes.STRING, allowNull: false}
 })
 
 const SpisokCat = sequelize.define('spisok_cat', {
@@ -60,6 +56,14 @@ const SpisokCat = sequelize.define('spisok_cat', {
     categoryName: {type: DataTypes.STRING},
     organizationName: {type: DataTypes.STRING}
 })
+
+const Notice = sequelize.define('notice', {
+    id: {type: DataTypes.INTEGER, autoIncrement: true},
+    email_notifications: {type: DataTypes.STRING, primaryKey: true, allowNull: false},
+    name: {type: DataTypes.STRING, allowNull: false},
+    message: {type: DataTypes.JSON, allowNull: false},
+})
+
 
 Role.hasMany(User)
 User.belongsTo(Role, { foreignKey: 'roleName'})
@@ -70,14 +74,12 @@ Organization.belongsTo(Locality, { foreignKey: 'localityName'})
 Type_org.hasMany(Organization)
 Organization.belongsTo(Type_org, { foreignKey: 'typeOrgName'})
 
-Status.hasMany(Organization)
-Organization.belongsTo(Status, { foreignKey: 'statusName'})
+Category.hasMany(SpisokCat)
+SpisokCat.belongsTo(Category, {foreignKey: 'categoryName'})
 
 Organization.hasMany(SpisokCat)
 SpisokCat.belongsTo(Organization, {foreignKey: 'organizationName'})
 
-Category.hasMany(SpisokCat)
-SpisokCat.belongsTo(Category, {foreignKey: 'categoryName'})
 
 module.exports = {
     Role,
@@ -85,7 +87,7 @@ module.exports = {
     Locality,
     Type_org,
     Category,
-    Status,
     Organization,
-    SpisokCat
+    SpisokCat,
+    Notice
 }

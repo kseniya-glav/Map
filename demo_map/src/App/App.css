@@ -20,8 +20,8 @@ body {
     background-image: linear-gradient(0deg, #62D4E3 -7.56%, #62D4E3 -7.54%, #FFDBBA 97.66%);
     background-attachment:fixed;
     overflow: auto;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
 }
 
 label {
