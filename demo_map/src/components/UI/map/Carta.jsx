@@ -9,15 +9,18 @@ import PlacemarkUI from "../placemark/PlacemarkUI";
 const Carta = observer(() => {
   const { organization } = useContext(Context);
 
-  //console.log(organization.selectedLocality.coordinates)
+  const centerLocality = organization.selectedLocality.locality
+    ? organization.selectedLocality.locality.coordinates
+    : [58.0105, 56.2502];
+
   return (
     <YMaps>
       <div id="carta-test" className="carta">
         <Map
           className="map"
           defaultState={{
-            center: [58.0105, 56.2502],
-            zoom: 10,
+            center: centerLocality,
+            zoom: 13,
             controls: ["zoomControl", "fullscreenControl"],
           }}
           modules={["control.ZoomControl", "control.FullscreenControl"]}
