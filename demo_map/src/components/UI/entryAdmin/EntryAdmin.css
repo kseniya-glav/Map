@@ -1,36 +1,44 @@
 .entryAdmin {
-  display: flex;
-  flex-direction: column;
-  margin: 0px 20px 0px;
-  width: 300px;
+    display: flex;
+    flex-direction: column;
+    margin: 0px 20px 0px;
+    width: 300px;
 
-  border: 1px solid #884000;
-  border-radius: 30px;
-  padding: 10px 15px 15px 15px;
+    border: 1px solid #884000;
+    border-radius: 30px;
+    padding: 10px 15px 15px 15px; 
+    /* align-items:center; */
+    /* width: 100vw; */
+    
 }
 
 .name_text {
-  font-family: "Times New Roman";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 23px;
-  color: #884000;
+    font-family: 'Times New Roman';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 23px;
+    /* word-wrap: break-word; */
+    color: #884000;
+
 }
 
 .mini_text {
-  font-size: 18px;
-  line-height: 20px;
-  margin-top: 3px;
+    font-size: 18px;
+    line-height: 20px;
+    margin-top: 3px;
+
 }
 
 .entryAdmin input {
-  border: 1px solid #884000;
-  border-radius: 30px;
-  width: 98%;
-  height: 20px;
-  padding-left: 10px;
+    border: 1px solid #884000;
+    border-radius: 30px;
+    width: 98%;
+    height: 20px;
+    padding-left: 10px;
+
 }
 
-input[type="text"] {
+input[type=text] {
+    
 }
