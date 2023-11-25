@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
+import classes from "./Pages.module.css";
 
 import FilterMap from "../components/UI/filterMap/FilterMap";
 import Footer from "../components/UI/footer/Footer";
@@ -30,14 +31,7 @@ const PublicMap = observer(() => {
   return isAuth ? (
     <div>
       <NavbarAdmin />
-      <div
-        className="carta_page"
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >
+      <div className={classes.carta_page}>
         <Carta />
         <FilterMap />
       </div>
@@ -45,14 +39,7 @@ const PublicMap = observer(() => {
   ) : (
     <div>
       <Navbar />
-      <div
-        className="carta_page"
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >
+      <div className={classes.carta_page}>
         <Carta />
         <FilterMap />
       </div>

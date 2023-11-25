@@ -1,19 +1,16 @@
 .myBtn {
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid #884000;
+  border-radius: 30px;
+  padding: 0px 15px;
+  cursor: pointer;
 
-    
-    background-color: rgba(255, 255, 255, 0.5);
-    border: 1px solid #884000;
-    border-radius: 30px;
-    padding: 0px 15px;
-    cursor: pointer;
+  font-family: "Times New Roman";
+  font-style: normal;
+  font-size: 18px;
+  word-wrap: break-word;
 
-    font-family: 'Times New Roman';
-    font-style: normal;
-    font-size: 18px;
-    word-wrap: break-word;
+  color: #884000;
 
-    color: #884000;
-
-    height: 35px;
-
+  height: 35px;
 }
