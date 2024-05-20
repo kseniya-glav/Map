@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./Navbar.css";
 
 const NavbarAdmin = () => {
@@ -12,18 +12,18 @@ const NavbarAdmin = () => {
       </div>
 
       <div className="links_admin">
-        <Link className="links" to="/map">
+        <NavLink className="links" to="/map">
           Карта
-        </Link>
-        <Link className="links" to="/notice">
+        </NavLink>
+        <NavLink className="links" to="/notice">
           Уведомления
-        </Link>
-        <Link className="links" to="/organization">
+        </NavLink>
+        <NavLink className="links" to="/organization">
           Организации
-        </Link>
-        <Link className="links" to="/user">
+        </NavLink>
+        <NavLink className="links" to="/user">
           Пользователи
-        </Link>
+        </NavLink>
       </div>
     </div>
   );

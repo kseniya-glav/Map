@@ -27,7 +27,7 @@ const PublicMap = observer(() => {
     fetchSpisokCats().then((data) => organization.setSpisokCats(data));
   }, []);
 
-  const isAuth = false;
+  const isAuth = true;
   return isAuth ? (
     <div>
       <NavbarAdmin />

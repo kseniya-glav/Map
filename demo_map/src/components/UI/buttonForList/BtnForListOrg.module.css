@@ -1,0 +1,23 @@
+.myBtn {
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid #884000;
+    border-radius: 30px;
+    margin: 5px 0;
+    padding: 3px 3px 3px 20px;
+    cursor: pointer;
+  
+    font-family: "Times New Roman";
+    font-style: normal;
+    font-size: 18px;
+    word-wrap: break-word;
+  
+    color: #884000;
+  
+  }
+  
+  .toggled {
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #62D4E3;
+  }
+  

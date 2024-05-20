@@ -20,7 +20,7 @@
     border-radius: 30px;
     padding: 10px 25px 15px 15px; 
     background-color: #F3BE8E;
-    height: 80vh;
+    height: 75vh;
 
     overflow-y: auto;
 }
@@ -113,18 +113,38 @@
 
 }
 
-.org_cart::-webkit-scrollbar {
+.edit_inf {
+    display: flex;
+    justify-content: space-around;
+}
+
+.list_org::-webkit-scrollbar {
     width: 15px;    
 }
   
-.org_cart::-webkit-scrollbar-track {
+.list_org::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.67); 
     border-radius: 30px;   
 
 }
   
-.org_cart::-webkit-scrollbar-thumb {
+.list_org::-webkit-scrollbar-thumb {
     background-color: #62D4E3;    
     border-radius: 30px;       
     border: 3px solid rgba(255, 255, 255, 0.67);  
+}
+
+.inf_bd {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 30px;
+    box-shadow: 0 0 5px 5px #F3BE8E inset;
+    font-style: italic;
+    font-size: 20px;
+
+}
+
+textarea {
+    resize : none;
+    overflow : auto;
+
 }

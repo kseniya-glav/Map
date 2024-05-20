@@ -2,6 +2,7 @@ import React, { createContext } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App/App";
 import OrgStore from "./store/OrgStore";
+import AdminOrgStore from "./store/AdminOrgStore";
 
 export const Context = createContext(null);
 
@@ -13,6 +14,7 @@ root.render(
     <Context.Provider
       value={{
         organization: new OrgStore(),
+        admin_organization: new AdminOrgStore()
       }}
     >
       <App />

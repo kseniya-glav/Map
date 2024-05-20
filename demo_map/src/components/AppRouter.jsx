@@ -4,7 +4,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { publicRoutes, privateRoutes } from "../router/routes";
 
 const AppRouter = observer(() => {
-  const isAuth = false;
+  const isAuth = true;
   return isAuth ? (
     <Routes>
       {privateRoutes.map((route) => (

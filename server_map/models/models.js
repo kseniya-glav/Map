@@ -36,13 +36,13 @@ const Organization = sequelize.define("organization", {
   },
   localityName: { type: DataTypes.STRING },
   street: { type: DataTypes.STRING },
-  numb_house: { type: DataTypes.INTEGER },
-  numb_housing: { type: DataTypes.INTEGER },
-  numb_flat: { type: DataTypes.INTEGER },
+  numb_house: { type: DataTypes.STRING },
+  numb_housing: { type: DataTypes.STRING },
+  numb_flat: { type: DataTypes.STRING },
   typeOrgName: { type: DataTypes.STRING },
   fio_director: { type: DataTypes.STRING },
-  email: { type: DataTypes.STRING, allowNull: false },
-  phone: { type: DataTypes.STRING, allowNull: false },
+  email: { type: DataTypes.STRING},
+  phone: { type: DataTypes.STRING},
   work_schedule: { type: DataTypes.JSON },
   additional_data: { type: DataTypes.TEXT },
   coordinates: { type: DataTypes.ARRAY(DataTypes.FLOAT), allowNull: false },
@@ -88,10 +88,9 @@ const SpisokCat = sequelize.define("spisok_cat", {
 });
 
 const Notice = sequelize.define("notice", {
-  id: { type: DataTypes.INTEGER, autoIncrement: true },
+  id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
   email_notifications: {
     type: DataTypes.STRING,
-    primaryKey: true,
     allowNull: false,
   },
   name: { type: DataTypes.STRING, allowNull: false },

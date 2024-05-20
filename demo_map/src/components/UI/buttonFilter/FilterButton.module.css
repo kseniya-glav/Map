@@ -17,6 +17,13 @@
   color: #884000;
 }
 
+.myBtn:hover{
+  font-weight: 700;
+}
+
 .toggled {
-  opacity: 0.5;
+  font-weight: 700;
+  border-top: 3px solid #884000;
+  border-bottom: 3px solid #884000;
+  border-left: 3px solid #884000;
 }
