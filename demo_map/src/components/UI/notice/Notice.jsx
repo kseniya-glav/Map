@@ -60,8 +60,8 @@ const Notice = () => {
     <div className="notice">
       <div className="org_left">
         <div className="list_org_notice">
-          {notice.map((org) => (
-            <MyButton style={{ margin: "4px 0" }} key={org.id}>
+          {notice.map((org, index) => (
+            <MyButton style={{ margin: "4px 0" }} key={index}>
               {org}
             </MyButton>
           ))}
@@ -138,8 +138,8 @@ const Notice = () => {
 
           <div className="add_type name_text mini_text">
             Тип организации
-            {type_organization.map((type) => (
-              <label style={{ fontSize: "16px" }} key={type.id}>
+            {type_organization.map((type, index) => (
+              <label style={{ fontSize: "16px" }} key={index}>
                 <input type="checkbox" className="check_type" value={type} />
                 {type}
               </label>
@@ -148,8 +148,8 @@ const Notice = () => {
           <div className="add_categ name_text mini_text">
             Категория помощи
             <div className="category_org">
-              {category.map((category) => (
-                <label style={{ fontSize: "16px" }} key={category.id}>
+              {category.map((category, index) => (
+                <label style={{ fontSize: "16px" }} key={index}>
                   <input
                     type="checkbox"
                     className="check_type"
@@ -183,8 +183,8 @@ const Notice = () => {
 
           <div className="name_text mini_text">
             График работы
-            {day.map((day) => (
-              <div className="stroka" key={day.id}>
+            {day.map((day, index) => (
+              <div className="stroka" key={index}>
                 <div
                   className="stroka_2 day name_text mini_text"
                   value={day}

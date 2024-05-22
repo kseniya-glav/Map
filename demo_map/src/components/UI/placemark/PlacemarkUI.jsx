@@ -29,7 +29,6 @@ const PlacemarkUI = observer(() => {
     });
   }
 
-
   const properties = (org) => {
     return {
       data: [
@@ -41,7 +40,12 @@ const PlacemarkUI = observer(() => {
       hintContent: org.name,
       balloonContentHeader: org.name,
       balloonContentBody: `
-      Категории помощи: ${ organization.spisokCats.map((item) => item.organizationName===org.name ? item.categoryName : "").join("\n")
+      Категории помощи: ${
+        organization.spisokCats
+          .map((item) =>
+            item.organizationName === org.name ? item.categoryName : ""
+          )
+          .join("\n")
         // organization.spisokCats.map((listcat) => (
         // listcat.organizationName===org.name?
         // listcat.categoryName.map((nam)=>(nam))
@@ -62,15 +66,95 @@ const PlacemarkUI = observer(() => {
       ${org.phone ? "Телефон: " + org.phone + "<br/>" : ""}
       ${org.email ? "Эл.почта: " + org.email + "<br/>" : ""}         
       ${org.additional_data ? org.additional_data + "<br/>" : ""}
-      ${org.work_schedule ? "График работы: " + "<br/>"+
-        (org.work_schedule.monday.weekend ? "Понедельник - выходной" : "Понедельник " + org.work_schedule.monday.time[0]+ " - " + org.work_schedule.monday.time[1] + "; " + "обед " + org.work_schedule.monday.lunch[0] + "-" + org.work_schedule.monday.lunch[1]) + "<br/>" +
-        (org.work_schedule.tuesday.weekend ? "Вторник - выходной" : "Вторник " + org.work_schedule.tuesday.time[0]+ " - " + org.work_schedule.tuesday.time[1] + "; " + "обед " + org.work_schedule.tuesday.lunch[0] + "-" + org.work_schedule.tuesday.lunch[1]) + "<br/>" +
-        (org.work_schedule.wednesday.weekend ? "Среда - выходной" : "Среда " + org.work_schedule.wednesday.time[0]+ " - " + org.work_schedule.wednesday.time[1] + "; " + "обед " + org.work_schedule.wednesday.lunch[0] + "-" + org.work_schedule.wednesday.lunch[1]) + "<br/>" +
-        (org.work_schedule.thursday.weekend ? "Четверг - выходной" : "Четверг " + org.work_schedule.thursday.time[0]+ " - " + org.work_schedule.thursday.time[1] + "; " + "обед " + org.work_schedule.thursday.lunch[0] + "-" + org.work_schedule.thursday.lunch[1]) + "<br/>" + 
-        (org.work_schedule.friday.weekend ? "Пятница - выходной" : "Пятница " + org.work_schedule.friday.time[0]+ " - " + org.work_schedule.friday.time[1] + "; " + "обед " + org.work_schedule.friday.lunch[0] + "-" + org.work_schedule.friday.lunch[1]) + "<br/>" +
-        (org.work_schedule.saturday.weekend ? "Суббота - выходной" : "Суббота " + org.work_schedule.saturday.time[0]+ " - " + org.work_schedule.saturday.time[1] + "; " + "обед " + org.work_schedule.saturday.lunch[0] + "-" + org.work_schedule.saturday.lunch[1]) + "<br/>" +
-        (org.work_schedule.sunday.weekend ? "Воскресенье - выходной" : "Воскресенье" + org.work_schedule.sunday.time[0]+ " - " + org.work_schedule.sunday.time[1] + "; " + "обед " + org.work_schedule.sunday.lunch[0] + "-" + org.work_schedule.sunday.lunch[1])
-        : ""}
+      ${
+        org.work_schedule
+          ? "График работы: " +
+            "<br/>" +
+            (org.work_schedule.monday.weekend
+              ? "Понедельник - выходной"
+              : "Понедельник " +
+                org.work_schedule.monday.time[0] +
+                " - " +
+                org.work_schedule.monday.time[1] +
+                "; " +
+                "обед " +
+                org.work_schedule.monday.lunch[0] +
+                "-" +
+                org.work_schedule.monday.lunch[1]) +
+            "<br/>" +
+            (org.work_schedule.tuesday.weekend
+              ? "Вторник - выходной"
+              : "Вторник " +
+                org.work_schedule.tuesday.time[0] +
+                " - " +
+                org.work_schedule.tuesday.time[1] +
+                "; " +
+                "обед " +
+                org.work_schedule.tuesday.lunch[0] +
+                "-" +
+                org.work_schedule.tuesday.lunch[1]) +
+            "<br/>" +
+            (org.work_schedule.wednesday.weekend
+              ? "Среда - выходной"
+              : "Среда " +
+                org.work_schedule.wednesday.time[0] +
+                " - " +
+                org.work_schedule.wednesday.time[1] +
+                "; " +
+                "обед " +
+                org.work_schedule.wednesday.lunch[0] +
+                "-" +
+                org.work_schedule.wednesday.lunch[1]) +
+            "<br/>" +
+            (org.work_schedule.thursday.weekend
+              ? "Четверг - выходной"
+              : "Четверг " +
+                org.work_schedule.thursday.time[0] +
+                " - " +
+                org.work_schedule.thursday.time[1] +
+                "; " +
+                "обед " +
+                org.work_schedule.thursday.lunch[0] +
+                "-" +
+                org.work_schedule.thursday.lunch[1]) +
+            "<br/>" +
+            (org.work_schedule.friday.weekend
+              ? "Пятница - выходной"
+              : "Пятница " +
+                org.work_schedule.friday.time[0] +
+                " - " +
+                org.work_schedule.friday.time[1] +
+                "; " +
+                "обед " +
+                org.work_schedule.friday.lunch[0] +
+                "-" +
+                org.work_schedule.friday.lunch[1]) +
+            "<br/>" +
+            (org.work_schedule.saturday.weekend
+              ? "Суббота - выходной"
+              : "Суббота " +
+                org.work_schedule.saturday.time[0] +
+                " - " +
+                org.work_schedule.saturday.time[1] +
+                "; " +
+                "обед " +
+                org.work_schedule.saturday.lunch[0] +
+                "-" +
+                org.work_schedule.saturday.lunch[1]) +
+            "<br/>" +
+            (org.work_schedule.sunday.weekend
+              ? "Воскресенье - выходной"
+              : "Воскресенье" +
+                org.work_schedule.sunday.time[0] +
+                " - " +
+                org.work_schedule.sunday.time[1] +
+                "; " +
+                "обед " +
+                org.work_schedule.sunday.lunch[0] +
+                "-" +
+                org.work_schedule.sunday.lunch[1])
+          : ""
+      }
         `,
     };
   };
@@ -78,11 +162,12 @@ const PlacemarkUI = observer(() => {
   return (
     <div>
       {organization.org.map(
-        (org) =>
+        (org, index) =>
           organization.checkedOrg.includes(org.typeOrgName) &&
           (activeCategory.length === 0 &&
           organization.selectedCategory.length === 0 ? (
             <Placemark
+              key={index}
               geometry={org.coordinates}
               properties={properties(org)}
               options={{
@@ -97,6 +182,7 @@ const PlacemarkUI = observer(() => {
           ) : (
             activeCategory.includes(org.name) && (
               <Placemark
+                key={index}
                 geometry={org.coordinates}
                 properties={properties(org)}
                 options={{

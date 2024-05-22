@@ -1,6 +1,7 @@
 import React, { createContext } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App/App";
+import UserStore from "./store/UserStore";
 import OrgStore from "./store/OrgStore";
 import AdminOrgStore from "./store/AdminOrgStore";
 
@@ -13,8 +14,9 @@ root.render(
   <React.StrictMode>
     <Context.Provider
       value={{
+        user: new UserStore(),
         organization: new OrgStore(),
-        admin_organization: new AdminOrgStore()
+        admin_organization: new AdminOrgStore(),
       }}
     >
       <App />

@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import MyButton from "../myButton/MyButton";
 import "./Users.css";
+import Modal from "../modal/modal";
+import { registration } from "../../../http/userAPI";
 
 const Users = () => {
+  const [fio, setFio] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [role, setRole] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [modalActive, setModalActive] = useState(false);
+  const addUser = async () => {
+    try {
+      await registration(fio, email, phone, role, password);
+      setModalActive(false);
+    } catch (e) {
+      alert(e.response.data.message);
+    }
+  };
+
   const users = [
     "name 1",
     "name 2",
@@ -32,19 +50,26 @@ const Users = () => {
     "name 6",
   ];
 
-  const dostup = ["Уведомления", "Организации", "Пользователи"];
+  const access = [
+    { name: "Уведомления", role: "user" },
+    { name: "Организации", role: "editor" },
+    { name: "Пользователи", role: "admin" },
+  ];
+
   return (
     <div className="users">
       <div className="org_left">
         <div className="list_org_users">
-          {users.map((user) => (
-            <MyButton style={{ margin: "4px 0" }} key={user.id}>
+          {users.map((user, index) => (
+            <MyButton style={{ margin: "4px 0" }} key={index}>
               {user}
             </MyButton>
           ))}
         </div>
         <div className="btn_add">
-          <MyButton>Добавить пользователя</MyButton>
+          <MyButton onClick={() => setModalActive(true)}>
+            Добавить пользователя
+          </MyButton>
         </div>
       </div>
       <div className="org_rigth">
@@ -69,10 +94,14 @@ const Users = () => {
 
           <div className="add_type name_text mini_text">
             Доступ
-            {dostup.map((dostup) => (
-              <label style={{ fontSize: "16px" }} key={dostup.id}>
-                <input type="checkbox" className="check_type" value={dostup} />
-                {dostup}
+            {access.map((dostup, index) => (
+              <label style={{ fontSize: "16px" }} key={index}>
+                <input
+                  type="checkbox"
+                  className="check_type"
+                  value={dostup.role}
+                />
+                {dostup.name}
               </label>
             ))}
           </div>
@@ -87,6 +116,73 @@ const Users = () => {
           </div>
         </div>
       </div>
+      <Modal active={modalActive} setActive={setModalActive}>
+        <div>
+          <form>
+            <div className="name_text center">Добавить пользователя</div>
+            <div className="name_text mini_text">ФИО</div>
+            <input
+              type="text"
+              value={fio}
+              onChange={(e) => setFio(e.target.value)}
+            />
+
+            <div className="stroka_2 name_text mini_text">
+              Электронная почта
+            </div>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            <div className="stroka_2 name_text mini_text">Телефон</div>
+            <input
+              type="number"
+              min="0"
+              max="99999999999"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+
+            <div className="stroka_2 name_text mini_text">Пароль</div>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            <div
+              className="flex_column"
+              onChange={(e) => setRole(e.target.value)}
+            >
+              Доступ
+              {access.map((item, index) => (
+                <label style={{ fontSize: "16px" }} key={index}>
+                  <input
+                    className="check_type"
+                    type="radio"
+                    name="access"
+                    value={item.role}
+                  />
+                  {item.name}
+                </label>
+              ))}
+            </div>
+          </form>
+
+          <div className="stroka" style={{ marginTop: "30px" }}>
+            <div className="stroka_2">
+              <MyButton onClick={() => setModalActive(false)}>
+                Отменить
+              </MyButton>
+            </div>
+            <div className="stroka_2">
+              <MyButton onClick={addUser}>Добавить</MyButton>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

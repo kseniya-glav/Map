@@ -24,6 +24,7 @@
 
   overflow-y: auto;
 }
+
 .name_text {
   font-family: "Times New Roman";
   font-style: normal;
@@ -31,6 +32,16 @@
   font-size: 20px;
   line-height: 23px;
   color: #884000;
+}
+
+.name_text.center {
+  display: flex;
+  justify-content: center;
+}
+
+.flex_column {
+  display: flex;
+  flex-direction: column;
 }
 
 .mini_text {

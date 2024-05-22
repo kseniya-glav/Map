@@ -32,8 +32,8 @@ const FilterMap = observer(() => {
   return (
     <div className="filter_map">
       <div className="filter type_organization">
-        {organization.type.map((type) => (
-          <label>
+        {organization.type.map((type, index) => (
+          <label key={index}>
             <input
               type="checkbox"
               className="check_type"

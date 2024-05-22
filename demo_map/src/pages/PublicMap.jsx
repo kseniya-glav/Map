@@ -18,6 +18,7 @@ import {
 
 const PublicMap = observer(() => {
   const { organization } = useContext(Context);
+  const { user } = useContext(Context);
 
   useEffect(() => {
     fetchCategory().then((data) => organization.setCategory(data));
@@ -27,8 +28,7 @@ const PublicMap = observer(() => {
     fetchSpisokCats().then((data) => organization.setSpisokCats(data));
   }, []);
 
-  const isAuth = true;
-  return isAuth ? (
+  return user.isAuth ? (
     <div>
       <NavbarAdmin />
       <div className={classes.carta_page}>

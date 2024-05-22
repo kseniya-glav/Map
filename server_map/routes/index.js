@@ -12,6 +12,6 @@ router.use("/type", typeRouter);
 router.use("/locality", localityRouter);
 router.use("/org", orgRouter);
 router.use("/spisokCats", spisokCatsRouter);
-// router.use('/user', userRouter)
+router.use("/user", userRouter);
 
 module.exports = router;

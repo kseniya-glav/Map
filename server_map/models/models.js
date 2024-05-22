@@ -13,7 +13,6 @@ const User = sequelize.define("user", {
   fio: { type: DataTypes.STRING },
   roleName: { type: DataTypes.STRING, allowNull: false },
   password: { type: DataTypes.STRING },
-  hashpassword: { type: DataTypes.STRING },
 });
 
 const Role = sequelize.define("role", {
@@ -41,8 +40,8 @@ const Organization = sequelize.define("organization", {
   numb_flat: { type: DataTypes.STRING },
   typeOrgName: { type: DataTypes.STRING },
   fio_director: { type: DataTypes.STRING },
-  email: { type: DataTypes.STRING},
-  phone: { type: DataTypes.STRING},
+  email: { type: DataTypes.STRING },
+  phone: { type: DataTypes.STRING },
   work_schedule: { type: DataTypes.JSON },
   additional_data: { type: DataTypes.TEXT },
   coordinates: { type: DataTypes.ARRAY(DataTypes.FLOAT), allowNull: false },
