@@ -11,7 +11,7 @@ const PublicAdd = () => {
   useEffect(() => {
     fetchCategory().then((data) => organization.setCategory(data));
     fetchType().then((data) => organization.setType(data));
-  }, []);
+  }, [organization]);
 
   return (
     <div>

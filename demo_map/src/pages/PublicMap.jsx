@@ -26,7 +26,7 @@ const PublicMap = observer(() => {
     fetchLocality().then((data) => organization.setLocality(data));
     fetchPlaceMark().then((data) => organization.setOrg(data));
     fetchSpisokCats().then((data) => organization.setSpisokCats(data));
-  }, []);
+  }, [organization]);
 
   return user.isAuth ? (
     <div>

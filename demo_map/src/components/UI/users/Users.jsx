@@ -8,11 +8,11 @@ import { fetchAllUsers, registration } from "../../../http/userAPI";
 import { Context } from "../../../index";
 
 const Users = observer(() => {
+  const { user } = useContext(Context);
+
   useEffect(() => {
     fetchAllUsers().then((data) => user.setAllUsers(data));
-  }, []);
-  
-  const { user } = useContext(Context);
+  }, [user]);
 
   const [fio, setFio] = useState("");
   const [email, setEmail] = useState("");
@@ -44,7 +44,7 @@ const Users = observer(() => {
             <MyButton style={{ margin: "4px 0" }} key={index}>
               {item.email}
             </MyButton>
-          ))} 
+          ))}
         </div>
         <div className="btn_add">
           <MyButton onClick={() => setModalActive(true)}>

@@ -21,7 +21,7 @@ const PrivateOrganization = observer(() => {
     fetchLocality().then((data) => admin_organization.setLocality(data));
     fetchPlaceMark().then((data) => admin_organization.setOrg(data));
     fetchSpisokCats().then((data) => admin_organization.setSpisokCats(data));
-  }, []);
+  }, [admin_organization]);
 
   return (
     <div>
