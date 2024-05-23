@@ -29,9 +29,11 @@ const NavbarAdmin = () => {
         <NavLink className="links" to="/notice">
           Уведомления
         </NavLink>
-        <NavLink className="links" to="/organization">
-          Организации
-        </NavLink>
+        {role !== "user" && (
+          <NavLink className="links" to="/organization">
+            Организации
+          </NavLink>
+        )}
         {role === "admin" && (
           <NavLink className="links" to="/user">
             Пользователи

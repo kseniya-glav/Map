@@ -1,7 +1,12 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { userRoutes, editorRoutes, adminRoutes } from "../router/routes";
+import {
+  publicRoutes,
+  userRoutes,
+  editorRoutes,
+  adminRoutes,
+} from "../router/routes";
 import { Context } from "../index";
 
 const AppRouter = observer(() => {
@@ -17,10 +22,10 @@ const AppRouter = observer(() => {
         case "user":
           return template(userRoutes);
         default:
-          return template(userRoutes);
+          return template(publicRoutes);
       }
     }
-    return template(userRoutes);
+    return template(publicRoutes);
   };
 
   const template = (selectedRouter) => {

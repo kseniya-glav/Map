@@ -5,9 +5,15 @@ import PrivateUser from "../pages/PrivateUser";
 import PublicAdd from "../pages/PublicAdd";
 import PublicMap from "../pages/PublicMap";
 
-export const userRoutes = [
+export const publicRoutes = [
   { path: "/admin", element: <PrivateEntry /> },
   { path: "/add", element: <PublicAdd /> },
+  { path: "/map", element: <PublicMap /> },
+];
+
+export const userRoutes = [
+  { path: "/admin", element: <PrivateEntry /> },
+  { path: "/notice", element: <PrivateNotice /> },
   { path: "/map", element: <PublicMap /> },
 ];
 
