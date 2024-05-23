@@ -52,6 +52,15 @@ class UserController {
     const token = generateJwt(req.user.id, req.user.email, user.roleName);
     return res.json({ token });
   }
+
+  async getAll(req, res) {
+    const user = await User.findAll();
+    const data = user.map((item) => {
+      item.password = null;
+      return item;
+    })
+    return res.json(data);
+  }
 }
 
 module.exports = new UserController();

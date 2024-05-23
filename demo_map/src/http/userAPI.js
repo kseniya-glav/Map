@@ -23,3 +23,12 @@ export const check = async () => {
   localStorage.setItem("token", data.token);
   return jwt_decode(data.token);
 };
+
+export const fetchAllUsers = async () => {
+  try {
+    const { data } = await $host.get("api/user/getAll");
+    return data;
+  } catch (err) {
+    return [];
+  }
+};

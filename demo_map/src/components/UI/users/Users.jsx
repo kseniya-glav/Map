@@ -1,10 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { observer } from "mobx-react-lite";
+
 import MyButton from "../myButton/MyButton";
 import "./Users.css";
 import Modal from "../modal/modal";
-import { registration } from "../../../http/userAPI";
+import { fetchAllUsers, registration } from "../../../http/userAPI";
+import { Context } from "../../../index";
 
-const Users = () => {
+const Users = observer(() => {
+  useEffect(() => {
+    fetchAllUsers().then((data) => user.setAllUsers(data));
+  }, []);
+  
+  const { user } = useContext(Context);
+
   const [fio, setFio] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -21,50 +30,21 @@ const Users = () => {
     }
   };
 
-  const users = [
-    "name 1",
-    "name 2",
-    "name 3",
-    "name 4",
-    "name 5",
-    "name 6",
-    "name 7",
-    "name 8",
-    "name 9",
-    "name 10",
-    "name 1",
-    "name 2",
-    "name 3",
-    "name 4",
-    "name 5",
-    "name 6",
-    "name 7",
-    "name 8",
-    "name 9",
-    "name 10",
-    "name 1",
-    "name 2",
-    "name 3",
-    "name 4",
-    "name 5",
-    "name 6",
-  ];
-
   const access = [
     { name: "Уведомления", role: "user" },
-    { name: "Организации", role: "editor" },
-    { name: "Пользователи", role: "admin" },
+    { name: "Уведомления + организации", role: "editor" },
+    { name: "Уведомления + организации + пользователи", role: "admin" },
   ];
 
   return (
     <div className="users">
       <div className="org_left">
         <div className="list_org_users">
-          {users.map((user, index) => (
+          {user.allUsers?.map((item, index) => (
             <MyButton style={{ margin: "4px 0" }} key={index}>
-              {user}
+              {item.email}
             </MyButton>
-          ))}
+          ))} 
         </div>
         <div className="btn_add">
           <MyButton onClick={() => setModalActive(true)}>
@@ -92,13 +72,19 @@ const Users = () => {
             </div>
           </div>
 
+          <div className="name_text mini_text">
+            Пароль
+            <input type="text"></input>
+          </div>
+
           <div className="add_type name_text mini_text">
             Доступ
             {access.map((dostup, index) => (
               <label style={{ fontSize: "16px" }} key={index}>
                 <input
-                  type="checkbox"
+                  type="radio"
                   className="check_type"
+                  name="a"
                   value={dostup.role}
                 />
                 {dostup.name}
@@ -185,6 +171,6 @@ const Users = () => {
       </Modal>
     </div>
   );
-};
+});
 
 export default Users;
