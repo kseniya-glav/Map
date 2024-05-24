@@ -22,7 +22,7 @@
   padding: 20px;
   border-radius: 12px;
   background-color: white;
-  width: 60vw;
+  /* width: 60vw; */
   transform: scale(0.5s);
   transition: 0.4s all;
 }

@@ -32,3 +32,12 @@ export const fetchAllUsers = async () => {
     return [];
   }
 };
+
+export const deleteUser = async (email) => {
+  try {
+    await $authHost.delete("api/user/delete", { data: { email } });
+    return true;
+  } catch (err) {
+    return false;
+  }
+};

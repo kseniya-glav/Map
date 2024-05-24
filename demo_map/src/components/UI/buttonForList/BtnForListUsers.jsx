@@ -8,9 +8,8 @@ const BtnForListUsers = observer(({ item }) => {
   const toogleClassCheck = item.active ? classes.toggled : "";
 
   function selectUser(item) {
-    console.log(user.selectedUser)
     if (item.email === user.selectedUser.email) {
-      user.setSelectedUser('');
+      user.setSelectedUser("");
       item.active = false;
     } else {
       user.setSelectedUser(item);
@@ -22,7 +21,7 @@ const BtnForListUsers = observer(({ item }) => {
   return (
     <button
       onClick={() => selectUser(item)}
-      className={`${classes.myBtn} ${toogleClassCheck }`}
+      className={`${classes.myBtn} ${toogleClassCheck}`}
       //={{ background: category.color }}
     >
       {item.fio}

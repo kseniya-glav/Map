@@ -58,8 +58,19 @@ class UserController {
     const data = user.map((item) => {
       item.password = null;
       return item;
-    })
+    });
     return res.json(data);
+  }
+
+  async delete(req, res) {
+    const { email } = req.body;
+
+    const data = await User.destroy({
+      where: {
+        email: email,
+      },
+    });
+    return res.json(!!data);
   }
 }
 

@@ -20,8 +20,6 @@
   border-radius: 30px;
   padding: 10px 25px 15px 15px;
   background-color: #f3be8e;
-  height: 33vh;
-
 }
 
 .name_text {
@@ -92,7 +90,7 @@
 .list_org_users {
   display: flex;
   flex-direction: column;
-  height: 85vh;
+  height: 84vh;
 
   overflow-y: auto;
 }
@@ -104,18 +102,16 @@
 }
 
 .list_org_users::-webkit-scrollbar {
-  width: 15px;    
+  width: 15px;
 }
 
 .list_org_users::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.67); 
-  border-radius: 30px;   
-
+  background: rgba(255, 255, 255, 0.67);
+  border-radius: 30px;
 }
 
 .list_org_users::-webkit-scrollbar-thumb {
-  background-color: #62D4E3;    
-  border-radius: 30px;       
-  border: 3px solid rgba(255, 255, 255, 0.67);  
+  background-color: #62d4e3;
+  border-radius: 30px;
+  border: 3px solid rgba(255, 255, 255, 0.67);
 }
-

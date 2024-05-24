@@ -41,8 +41,11 @@ export default class UserStore {
     this._allUsers.forEach((item) => (item.active = false));
   }
 
+  removeUser(email) {
+    this._allUsers = this._allUsers.filter((item) => item.email !== email);
+  }
+
   get selectedUser() {
     return this._selectedUser;
   }
 }
-
