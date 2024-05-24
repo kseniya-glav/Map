@@ -6,13 +6,20 @@ import "./Users.css";
 import Modal from "../modal/modal";
 import { fetchAllUsers, registration } from "../../../http/userAPI";
 import { Context } from "../../../index";
+import BtnForListUsers from "../buttonForList/BtnForListUsers";
 
 const Users = observer(() => {
   const { user } = useContext(Context);
+  const [editMode, setEditMode] = useState(false);
+  const selectedUser = user.selectedUser;
 
   useEffect(() => {
     fetchAllUsers().then((data) => user.setAllUsers(data));
   }, [user]);
+
+  const setMode = () => {
+    setEditMode((editMode) => !editMode);
+  };
 
   const [fio, setFio] = useState("");
   const [email, setEmail] = useState("");
@@ -41,9 +48,8 @@ const Users = observer(() => {
       <div className="org_left">
         <div className="list_org_users">
           {user.allUsers?.map((item, index) => (
-            <MyButton style={{ margin: "4px 0" }} key={index}>
-              {item.fio}
-            </MyButton>
+            <BtnForListUsers style={{ margin: "4px 0" }} key={item.id} item={item}>
+            </BtnForListUsers>
           ))}
         </div>
         <div className="btn_add">
@@ -55,51 +61,118 @@ const Users = observer(() => {
       <div className="org_rigth">
         <div className="name_text">Карточка пользователя</div>
         <div className="org_cart_users">
-          <div className="name_text mini_text">
-            ФИО
-            <input type="text"></input>
+          <div className="stroka_2 name_text mini_text">
+          ФИО
+          {editMode ? (
+            <input
+              type="text"
+              name="fioUser"
+              defaultValue={selectedUser ? selectedUser.fio : "-"}
+              onChange={(e) => setFio(e.target.value)}
+            />
+            ) : (
+              <label className="inf_bd">
+              {selectedUser ? selectedUser.fio : "-"}
+            </label>
+          )}
           </div>
 
           <div className="stroka">
             <div className="stroka_2 name_text mini_text">
-              Электронная почта
-              <input type="email"></input>
+            Электронная почта
+          {editMode ? (
+            <input
+              type="email"
+              name="emailUser"
+              defaultValue={selectedUser ? selectedUser.email : "-"}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            ) : (
+              <label className="inf_bd">
+              {selectedUser ? selectedUser.email : "-"}
+            </label>
+          )}
             </div>
 
             <div className="stroka_2 name_text mini_text">
-              Телефон
-              <input type="tel"></input>
+            Телефон
+          {editMode ? (
+            <input
+              type="tel"
+              name="phoneUser"
+              defaultValue={selectedUser ? selectedUser.phone : "-"}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+            ) : (
+              <label className="inf_bd">
+              {selectedUser ? selectedUser.phone : "-"}
+            </label>
+          )}
             </div>
           </div>
 
+
           <div className="name_text mini_text">
             Пароль
-            <input type="text"></input>
+          {editMode ? (
+            <input
+              type="text"
+              name="passwordUser"
+              defaultValue={selectedUser ? selectedUser.password : "-"}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            ) : (
+              <label className="inf_bd">
+              {selectedUser ? "******" : "-"}
+            </label>
+          )}
           </div>
 
           <div className="add_type name_text mini_text">
             Доступ
-            {access.map((dostup, index) => (
-              <label style={{ fontSize: "16px" }} key={index}>
-                <input
-                  type="radio"
-                  className="check_type"
-                  name="access"
-                  value={dostup.role}
-                />
-                {dostup.name}
-              </label>
-            ))}
+            {editMode ? ( access.map((dostup, index) => (
+            <label style={{ fontSize: "16px" }} key={index}>
+              <input
+                type="radio"
+                className="check_type"
+                name="access"
+                defaultChecked={selectedUser?.roleName}
+                value={dostup.role}
+              />
+              {dostup.name}
+            </label>
+          ))
+          ) : (
+          <label className="inf_bd">
+            {selectedUser ? (!selectedUser.roleName ? "--" : access.map((dostup) => (dostup.role===selectedUser.roleName ? dostup.name : "") ) ): "--"}
+          </label>
+            )}
           </div>
 
-          <div className="stroka" style={{ marginTop: "30px" }}>
-            <div className="stroka_2">
-              <MyButton>Удалить</MyButton>
-            </div>
-            <div className="stroka_2">
+          <div className="edit_inf">
+          {editMode && (
+            <div className="btn_add">
               <MyButton>Сохранить</MyButton>
             </div>
+          )}
+          {selectedUser && (
+            <div className="btn_add">
+              <MyButton onClick={() => setMode()}>
+                {!editMode ? "Редактировать" : "Отмена"}
+              </MyButton>
+            </div>
+          )}
+          {selectedUser && (
+            <div className="btn_add">
+              <MyButton>Удалить</MyButton>
+            </div>
+          )}
           </div>
+
+
+
+
+
         </div>
       </div>
       <Modal active={modalActive} setActive={setModalActive}>
