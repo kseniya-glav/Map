@@ -33,6 +33,13 @@ label {
   align-items: center;
   color: #884000;
 }
+
+div[disabled] {
+  pointer-events: none;
+  opacity: 0.7;
+  user-select: none;
+}
+
 /* 
 body::-webkit-scrollbar {
     width: 15px;   

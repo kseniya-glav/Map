@@ -33,9 +33,8 @@ export default class AdminOrgStore {
     this._selectedOrg = org;
   }
 
-
   removeAllSelectedOrgActive() {
-    this._org.forEach((item) => item.active = false);
+    this._org.forEach((item) => (item.active = false));
   }
 
   setSpisokCats(list) {
@@ -106,7 +105,7 @@ export default class AdminOrgStore {
   }
 
   get org() {
-    this._org.forEach((item) => item.active = false)
+    this._org.forEach((item) => (item.active = false));
     return this._org;
   }
 

@@ -42,7 +42,7 @@ const Users = observer(() => {
         <div className="list_org_users">
           {user.allUsers?.map((item, index) => (
             <MyButton style={{ margin: "4px 0" }} key={index}>
-              {item.email}
+              {item.fio}
             </MyButton>
           ))}
         </div>
@@ -84,7 +84,7 @@ const Users = observer(() => {
                 <input
                   type="radio"
                   className="check_type"
-                  name="a"
+                  name="access"
                   value={dostup.role}
                 />
                 {dostup.name}

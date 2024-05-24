@@ -11,15 +11,15 @@ const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 
 root.render(
-  <React.StrictMode>
-    <Context.Provider
-      value={{
-        user: new UserStore(),
-        organization: new OrgStore(),
-        admin_organization: new AdminOrgStore(),
-      }}
-    >
-      <App />
-    </Context.Provider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <Context.Provider
+    value={{
+      user: new UserStore(),
+      organization: new OrgStore(),
+      admin_organization: new AdminOrgStore(),
+    }}
+  >
+    <App />
+  </Context.Provider>
+  // </React.StrictMode>
 );

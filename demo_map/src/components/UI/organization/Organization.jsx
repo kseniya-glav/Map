@@ -7,13 +7,14 @@ import BtnForListOrg from "../buttonForList/BtnForListOrg";
 import InfOrg from "./inf/InfOrg";
 
 const Organization = observer(() => {
-
   const { admin_organization } = useContext(Context);
   const [editMode, setEditMode] = useState(false);
 
+  const selectedOrg = admin_organization.selectedOrg;
+
   const setMode = () => {
     setEditMode((editMode) => !editMode);
-  }
+  };
 
   const day = [
     "Понедельник",
@@ -60,14 +61,13 @@ const Organization = observer(() => {
             </select>
           </div>
         </div>
-        <div className="list_org">
+        <div className="list_org" disabled={editMode}>
           {admin_organization.org.map((org) => (
-            <BtnForListOrg 
-              style={{ margin: "4px 0" }} 
-              key={org.id} 
-              org={org} 
-              >
-            </BtnForListOrg>
+            <BtnForListOrg
+              style={{ margin: "4px 0" }}
+              key={org.id}
+              org={org}
+            ></BtnForListOrg>
           ))}
         </div>
         <div className="btn_add">
@@ -77,18 +77,26 @@ const Organization = observer(() => {
       <div className="org_rigth">
         <div className="name_text">Карточка организации</div>
 
-        <InfOrg editMode={editMode}/>
+        <InfOrg editMode={editMode} />
 
         <div className="edit_inf">
-          <div className="btn_add">
-            <MyButton>Сохранить</MyButton>
-          </div>
-          <div className="btn_add">
-            <MyButton onClick={() => setMode()}>Редактировать</MyButton>
-          </div>
-          <div className="btn_add">
-            <MyButton>Удалить</MyButton>
-          </div>
+          {editMode && (
+            <div className="btn_add">
+              <MyButton>Сохранить</MyButton>
+            </div>
+          )}
+          {selectedOrg && (
+            <div className="btn_add">
+              <MyButton onClick={() => setMode()}>
+                {!editMode ? "Редактировать" : "Отмена"}
+              </MyButton>
+            </div>
+          )}
+          {selectedOrg && (
+            <div className="btn_add">
+              <MyButton>Удалить</MyButton>
+            </div>
+          )}
         </div>
       </div>
     </div>

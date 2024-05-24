@@ -5,9 +5,49 @@ import MyButton from "../../myButton/MyButton";
 
 const InfOrg = observer(({ editMode }) => {
   const { admin_organization } = useContext(Context);
-  const selectedOrg = admin_organization.selectedOrg;
+  const adminOrg = admin_organization;
+  const selectedOrg = adminOrg.selectedOrg;
+
+  const listOfHelpCategoriesSelected =
+    adminOrg.spisokCats.find(
+      (list) => list.organizationName === selectedOrg?.name
+    )?.categoryName || [];
+
+  const allCategory = JSON.parse(JSON.stringify(adminOrg.category));
+  allCategory.forEach((el) => {
+    if (listOfHelpCategoriesSelected.includes(el.name)) {
+      el.checked = true;
+    } else {
+      el.checked = false;
+    }
+  });
 
   const [name, setName] = useState("");
+  const [localityName, setLocalityName] = useState("");
+  const [street, setStreet] = useState("");
+  const [numb_house, setNumb_house] = useState("");
+  const [numb_housing, setNumb_housing] = useState("");
+  const [numb_flat, setNumb_flat] = useState("");
+  const [type, setType] = useState("");
+
+  const [category, setCategory] = useState(allCategory); //
+
+  const [fio_director, setFio_director] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [work_schedule, setWork_schedule] = useState({});
+  const [additional_data, setAdditional_data] = useState("");
+  const [coordinates, setCoordinates] = useState([]);
+
+  // const setCategoryFunction = (id) => {
+  //   const updatedCheckboxes = category.map((checkbox) =>
+  //     checkbox.id === id
+  //       ? { ...checkbox, checked: !checkbox.checked }
+  //       : checkbox
+  //   );
+  //   setCategory(updatedCheckboxes);
+  //   // console.log("category", category);
+  // };
 
   //const [selectedValue, setSelectedValue] = useState("Пермь");
   const dayweek = [
@@ -38,11 +78,12 @@ const InfOrg = observer(({ editMode }) => {
         )}
       </div>
       <div className="stroka_2 name_text mini_text">
-        <nobr>Населенный пункт</nobr>
+        Населенный пункт
         {editMode ? (
           <input
             type="text"
             defaultValue={selectedOrg ? selectedOrg.localityName : "-"}
+            onChange={(e) => setLocalityName(e.target.value)}
           />
         ) : (
           <label className="inf_bd">
@@ -57,6 +98,7 @@ const InfOrg = observer(({ editMode }) => {
             <input
               type="text"
               defaultValue={selectedOrg ? selectedOrg.street : "-"}
+              onChange={(e) => setStreet(e.target.value)}
             />
           ) : (
             <label className="inf_bd">
@@ -74,6 +116,7 @@ const InfOrg = observer(({ editMode }) => {
             <input
               type="text"
               defaultValue={selectedOrg ? selectedOrg.numb_house : "-"}
+              onChange={(e) => setNumb_house(e.target.value)}
             />
           ) : (
             <label className="inf_bd">
@@ -91,6 +134,7 @@ const InfOrg = observer(({ editMode }) => {
             <input
               type="text"
               defaultValue={selectedOrg ? selectedOrg.numb_housing : "-"}
+              onChange={(e) => setNumb_housing(e.target.value)}
             />
           ) : (
             <label className="inf_bd">
@@ -108,6 +152,7 @@ const InfOrg = observer(({ editMode }) => {
             <input
               type="text"
               defaultValue={selectedOrg ? selectedOrg.numb_flat : "-"}
+              onChange={(e) => setNumb_flat(e.target.value)}
             />
           ) : (
             <label className="inf_bd">
@@ -121,15 +166,20 @@ const InfOrg = observer(({ editMode }) => {
         </div>
       </div>
 
-      <div className="add_type name_text mini_text">
+      <div
+        className="add_type name_text mini_text"
+        onChange={(e) => setType(e.target.value)}
+      >
         Тип организации
         {editMode ? (
-          admin_organization.type.map((type, index) => (
+          adminOrg.type.map((type, index) => (
             <label style={{ fontSize: "16px" }} key={index}>
               <input
-                type="checkbox"
+                type="radio"
                 className="check_type"
-                defaultValue={type.name || ""}
+                name="typeOfOrganization"
+                defaultChecked={selectedOrg?.typeOrgName}
+                value={type.name}
               />
               {type.name}
             </label>
@@ -148,28 +198,31 @@ const InfOrg = observer(({ editMode }) => {
         Категория помощи
         {editMode ? (
           <div className="category_org">
-            {admin_organization.category.map((category, index) => (
+            {allCategory.map((category, index) => (
               <label style={{ fontSize: "16px" }} key={index}>
                 <input
                   type="checkbox"
                   className="check_type"
-                  defaultValue={category.name || ""}
-                  disabled={!editMode}
+                  // name={category.name}
+                  // defaultValue={category.name || ""}
+                  defaultChecked={category.checked}
+                  // onChange={() => setCategoryFunction(category.id)}
+                  // defaultChecked={listOfHelpCategoriesSelected.includes(
+                  //   category.name
+                  // )}
                 />
                 {category.name}
               </label>
             ))}
           </div>
+        ) : listOfHelpCategoriesSelected.length ? (
+          listOfHelpCategoriesSelected?.map((list, index) => (
+            <label className="inf_bd" key={index}>
+              {list}
+            </label>
+          ))
         ) : (
-          admin_organization.spisokCats.map((listcat, index) =>
-            listcat.organizationName === selectedOrg.name
-              ? listcat.categoryName.map((name, index) => (
-                  <label className="inf_bd" key={index}>
-                    {name}
-                  </label>
-                ))
-              : ""
-          )
+          <label className="inf_bd">--</label>
         )}
       </div>
 
@@ -188,7 +241,7 @@ const InfOrg = observer(({ editMode }) => {
         <input
           type="text"
           defaultValue={selectedOrg ? selectedOrg.fio_director : ""}
-          disabled={!editMode}
+          onChange={(e) => setFio_director(e.target.value)}
         />
       ) : (
         <label className="inf_bd">
@@ -207,7 +260,7 @@ const InfOrg = observer(({ editMode }) => {
             <input
               type="email"
               defaultValue={selectedOrg ? selectedOrg.email : ""}
-              disabled={!editMode}
+              onChange={(e) => setEmail(e.target.value)}
             />
           ) : (
             <label className="inf_bd">
@@ -226,7 +279,7 @@ const InfOrg = observer(({ editMode }) => {
             <input
               type="text"
               defaultValue={selectedOrg ? selectedOrg.phone : ""}
-              disabled={!editMode}
+              onChange={(e) => setPhone(e.target.value)}
             />
           ) : (
             <label className="inf_bd">
@@ -524,7 +577,7 @@ const InfOrg = observer(({ editMode }) => {
               className="dop"
               type="text"
               defaultValue={selectedOrg ? selectedOrg.additional_data : "--"}
-              disabled={!editMode}
+              onChange={(e) => setAdditional_data(e.target.value)}
             />
           </>
         ) : (
@@ -549,7 +602,7 @@ const InfOrg = observer(({ editMode }) => {
                 step="0.0000000000000000000001"
                 min="0"
                 max="200"
-                disabled={!editMode}
+                onChange={(e) => setCoordinates(e.target.value)}
               />
             </div>
             <div className="stroka_2 name_text mini_text">
@@ -559,7 +612,7 @@ const InfOrg = observer(({ editMode }) => {
                 step="0.0000000000000000000001"
                 min="0"
                 max="200"
-                disabled={!editMode}
+                onChange={(e) => setCoordinates(e.target.value)}
               />
             </div>
           </div>
