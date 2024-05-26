@@ -54,23 +54,50 @@ class UserController {
   }
 
   async getAll(req, res) {
-    const user = await User.findAll();
-    const data = user.map((item) => {
-      item.password = null;
-      return item;
+    const user = await User.findAll({
+      attributes: { exclude: ["password"] },
     });
-    return res.json(data);
+
+    return res.json(user);
   }
 
   async delete(req, res) {
-    const { email } = req.body;
+    const { id } = req.params;
 
     const data = await User.destroy({
       where: {
-        email: email,
+        id: id,
       },
     });
     return res.json(!!data);
+  }
+
+  async update(req, res, next) {
+    const data = req.body;
+    const { id } = req.params;
+    if (data.email) {
+      const emailAlreadyExists = !!(await User.findOne({
+        where: { email: data.email },
+      }));
+
+      if (emailAlreadyExists) {
+        return next(
+          ApiError.internal("Пользователь с такой почтой уже существует")
+        );
+      }
+    }
+
+    if (data.password) {
+      data.password = await bcrypt.hash(data.password, 5);
+    }
+
+    const request = await User.update(data, {
+      where: {
+        id: id,
+      },
+    });
+
+    return res.json(!!request[0]);
   }
 }
 

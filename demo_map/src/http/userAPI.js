@@ -33,11 +33,16 @@ export const fetchAllUsers = async () => {
   }
 };
 
-export const deleteUser = async (email) => {
+export const deleteUser = async (id) => {
   try {
-    await $authHost.delete("api/user/delete", { data: { email } });
+    await $authHost.delete(`api/user/delete/${id}`);
     return true;
   } catch (err) {
     return false;
   }
+};
+
+export const updateUser = async (id, newData) => {
+  const { data } = await $authHost.patch(`api/user/update/${id}`, newData);
+  return data;
 };

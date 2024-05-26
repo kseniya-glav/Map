@@ -33,16 +33,25 @@ export default class UserStore {
     return this._allUsers;
   }
 
-  setSelectedUser(us) {
-    this._selectedUser = us;
+  setSelectedUser(user) {
+    this._selectedUser = user;
   }
 
   removeAllSelectedUserActive() {
     this._allUsers.forEach((item) => (item.active = false));
   }
 
-  removeUser(email) {
-    this._allUsers = this._allUsers.filter((item) => item.email !== email);
+  removeUser(id) {
+    this._allUsers = this._allUsers.filter((item) => item.id !== id);
+  }
+
+  updateUser(id, newData) {
+    for (const user of this._allUsers) {
+      if (user.id === id) {
+        Object.assign(user, newData);
+        break;
+      }
+    }
   }
 
   get selectedUser() {

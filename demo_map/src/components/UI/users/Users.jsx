@@ -4,7 +4,12 @@ import { observer } from "mobx-react-lite";
 import MyButton from "../myButton/MyButton";
 import "./Users.css";
 import Modal from "../modal/modal";
-import { fetchAllUsers, registration, deleteUser } from "../../../http/userAPI";
+import {
+  fetchAllUsers,
+  registration,
+  deleteUser,
+  updateUser,
+} from "../../../http/userAPI";
 import { Context } from "../../../index";
 import BtnForListUsers from "../buttonForList/BtnForListUsers";
 
@@ -29,19 +34,63 @@ const Users = observer(() => {
 
   const [modalActive, setModalActive] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
+  const [modalUpdate, setModalUpdate] = useState(false);
 
-  const delUser = async () => {
+  const onDeleteUser = async () => {
     try {
-      await deleteUser(selectedUser.email);
-      user.removeUser(selectedUser.email);
+      await deleteUser(selectedUser.id);
+      user.removeUser(selectedUser.id);
       user.setSelectedUser("");
+      setEditMode(false);
       setModalDelete(false);
     } catch (e) {
       alert(e.response.data.message);
     }
   };
 
-  const addUser = async () => {
+  const onUpdateUser = async () => {
+    const data = {};
+
+    if (email && email !== selectedUser.email) {
+      data.email = email;
+    }
+
+    if (phone && phone !== selectedUser.phone) {
+      data.phone = phone;
+    }
+
+    if (fio && fio !== selectedUser.fio) {
+      data.fio = fio;
+    }
+
+    if (role && role !== selectedUser.role) {
+      data.roleName = role;
+    }
+
+    if (password) {
+      data.password = password;
+    }
+
+    try {
+      await updateUser(selectedUser.id, data);
+      delete data.password;
+      if (data) {
+        user.updateUser(selectedUser.id, data);
+      }
+      setEditMode(false);
+    } catch (e) {
+      alert(e.response.data.message);
+    }
+    setEmail("");
+    setPhone("");
+    setFio("");
+    setRole("");
+    setPassword("");
+
+    setModalUpdate(false);
+  };
+
+  const onAddUser = async () => {
     try {
       await registration(fio, email, phone, role, password);
       setModalActive(false);
@@ -141,19 +190,22 @@ const Users = observer(() => {
             )}
           </div>
 
-          <div className="add_type name_text mini_text">
+          <div
+            className="add_type name_text mini_text"
+            onChange={(e) => setRole(e.target.value)}
+          >
             Доступ
             {editMode ? (
-              access.map((dostup, index) => (
+              access.map((access, index) => (
                 <label style={{ fontSize: "16px" }} key={index}>
                   <input
                     type="radio"
                     className="check_type"
                     name="access"
-                    defaultChecked={selectedUser?.roleName}
-                    value={dostup.role}
+                    defaultChecked={access.role === selectedUser?.roleName}
+                    value={access.role}
                   />
-                  {dostup.name}
+                  {access.name}
                 </label>
               ))
             ) : (
@@ -172,7 +224,9 @@ const Users = observer(() => {
           <div className="edit_inf">
             {editMode && (
               <div className="btn_add">
-                <MyButton>Сохранить</MyButton>
+                <MyButton onClick={() => setModalUpdate(true)}>
+                  Сохранить
+                </MyButton>
               </div>
             )}
             {selectedUser && (
@@ -190,12 +244,21 @@ const Users = observer(() => {
               </div>
             )}
           </div>
+
+          <Modal active={modalUpdate} setActive={setModalUpdate} width={"45vw"}>
+            <h1>
+              Редактировать данные пользователя <br />«{selectedUser.fio}»?
+            </h1>
+            <MyButton onClick={onUpdateUser}>Редактировать</MyButton>
+            <MyButton onClick={() => setModalUpdate(false)}>Отменить</MyButton>
+          </Modal>
+
           <Modal active={modalDelete} setActive={setModalDelete} width={"45vw"}>
             <h1>
               Вы действительно хотите удалть пользователя <br />«
               {selectedUser.fio}»?
             </h1>
-            <MyButton onClick={delUser}>Удалить</MyButton>
+            <MyButton onClick={onDeleteUser}>Удалить</MyButton>
             <MyButton onClick={() => setModalDelete(false)}>Отменить</MyButton>
           </Modal>
         </div>
@@ -262,7 +325,7 @@ const Users = observer(() => {
               </MyButton>
             </div>
             <div className="stroka_2">
-              <MyButton onClick={addUser}>Добавить</MyButton>
+              <MyButton onClick={onAddUser}>Добавить</MyButton>
             </div>
           </div>
         </div>
