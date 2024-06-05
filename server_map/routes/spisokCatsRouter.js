@@ -1,7 +1,8 @@
 const Router = require("express");
-const typeController = require("../controllers/spisokCatsController");
+const spisokCatsController = require("../controllers/spisokCatsController");
 const router = new Router();
 
-router.get("/", typeController.getAll);
+router.get("/", spisokCatsController.getAll);
+router.post("/adding", spisokCatsController.adding);
 
 module.exports = router;

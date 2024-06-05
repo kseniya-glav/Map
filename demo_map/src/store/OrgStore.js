@@ -102,4 +102,5 @@ export default class OrgStore {
   get checkedOrg() {
     return this._checkedOrg;
   }
+
 }

@@ -44,8 +44,8 @@ const Organization = sequelize.define("organization", {
   phone: { type: DataTypes.STRING },
   work_schedule: { type: DataTypes.JSON },
   additional_data: { type: DataTypes.TEXT },
-  coordinates: { type: DataTypes.ARRAY(DataTypes.FLOAT), allowNull: false },
-  statusName: { type: DataTypes.BOOLEAN, allowNull: false },
+  coordinates: { type: DataTypes.ARRAY(DataTypes.FLOAT)},
+  statusName: { type: DataTypes.BOOLEAN},
 });
 
 const Locality = sequelize.define("locality", {

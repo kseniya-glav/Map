@@ -255,7 +255,7 @@ const Users = observer(() => {
 
           <Modal active={modalDelete} setActive={setModalDelete} width={"45vw"}>
             <h1>
-              Вы действительно хотите удалть пользователя <br />«
+              Вы действительно хотите удалить пользователя <br />«
               {selectedUser.fio}»?
             </h1>
             <MyButton onClick={onDeleteUser}>Удалить</MyButton>

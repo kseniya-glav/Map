@@ -116,4 +116,17 @@ export default class AdminOrgStore {
   get checkedOrg() {
     return this._checkedOrg;
   }
+
+  removeOrg(id) {
+    this._org = this._org.filter((item) => item.id !== id);
+  }
+
+  updateOrg(id, newData) {
+    for (const org of this._org) {
+      if (org.id === id) {
+        Object.assign(org, newData);
+        break;
+      }
+    }
+  }
 }

@@ -33,7 +33,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="footer_bottom text">© 2023, ПРОО “Нас много”</div>
+      <div className="footer_bottom text">© 2024, ПРОО “Нас много”</div>
     </div>
   );
 };

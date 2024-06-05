@@ -5,6 +5,18 @@ class SpisokCatsController {
     const locality = await SpisokCat.findAll();
     return res.json(locality);
   }
+
+  async adding(req, res, next) {
+    const { category_help_name, name} = req.body;
+    
+    const organizationName = name;
+    const sps = category_help_name?.forEach(categoryName => {
+      SpisokCat.create({categoryName, organizationName})
+    });
+
+    return res.json(sps);
+  }
 }
+
 
 module.exports = new SpisokCatsController();

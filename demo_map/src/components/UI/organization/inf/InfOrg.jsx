@@ -3,10 +3,32 @@ import { observer } from "mobx-react-lite";
 import { Context } from "../../../../index";
 import MyButton from "../../myButton/MyButton";
 
-const InfOrg = observer(({ editMode }) => {
+const InfOrg = observer(({ editMode, selectedOrg, 
+                            name , setName,
+                            localityName, setLocalityName,
+                            street, setStreet,
+                            numb_house, setNumb_house,
+                            numb_housing, setNumb_housing,
+                            numb_flat, setNumb_flat,
+                            type_org_name, setType_org_name,
+                            category_help_name, setCategoryHelpName,
+                            fio_director, setFio_director,
+                            email, setEmail,
+                            phone, setPhone,
+                            work_schedule, setWork_schedule,
+                            additional_data, setAdditional_data,
+                            coordinates, setCoordinates,
+                            status_name, setStatus_name
+                          }) => {
   const { admin_organization } = useContext(Context);
   const adminOrg = admin_organization;
-  const selectedOrg = adminOrg.selectedOrg;
+  //const selectedOrg = adminOrg.selectedOrg;
+
+  const updateCoordinates = (index, newValue) => {
+    const newNumbers = [...coordinates]; // Создаем копию массива
+    newNumbers[index] = newValue; // Обновляем значение по указанному индексу
+    setCoordinates(newNumbers); // Устанавливаем новый массив чисел
+  };
 
   const listOfHelpCategoriesSelected =
     adminOrg.spisokCats.find(
@@ -22,34 +44,27 @@ const InfOrg = observer(({ editMode }) => {
     }
   });
 
-  const [name, setName] = useState("");
-  const [localityName, setLocalityName] = useState("");
-  const [street, setStreet] = useState("");
-  const [numb_house, setNumb_house] = useState("");
-  const [numb_housing, setNumb_housing] = useState("");
-  const [numb_flat, setNumb_flat] = useState("");
-  const [type, setType] = useState("");
 
-  const [category, setCategory] = useState(allCategory); //
+  const handleCheckboxChange = (value) => {
+    if (category_help_name.includes(value)) {
+      setCategoryHelpName(category_help_name.filter(item => item !== value));
+    } else {
+      setCategoryHelpName([...category_help_name, value]);
+    }
+  };
 
-  const [fio_director, setFio_director] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [work_schedule, setWork_schedule] = useState({});
-  const [additional_data, setAdditional_data] = useState("");
-  const [coordinates, setCoordinates] = useState([]);
 
-  // const setCategoryFunction = (id) => {
-  //   const updatedCheckboxes = category.map((checkbox) =>
-  //     checkbox.id === id
-  //       ? { ...checkbox, checked: !checkbox.checked }
-  //       : checkbox
-  //   );
-  //   setCategory(updatedCheckboxes);
-  //   // console.log("category", category);
-  // };
+  const updateNestedField = (fieldName, nestedFieldName, index, newValue) => {
+    if (index){
+      const newNumbers = [...work_schedule[fieldName][nestedFieldName]]; // Создаем копию массива
+      newNumbers[index-1] = newValue; // Обновляем значение по указанному индексу
+      setWork_schedule({ ...work_schedule, [fieldName]: { ...work_schedule[fieldName], [nestedFieldName]: newNumbers } });
+    } else {
+      setWork_schedule({ ...work_schedule, [fieldName]: { ...work_schedule[fieldName], [nestedFieldName]: newValue } });
+    }
+  };
 
-  //const [selectedValue, setSelectedValue] = useState("Пермь");
+
   const dayweek = [
     "Понедельник",
     "Вторник",
@@ -63,13 +78,14 @@ const InfOrg = observer(({ editMode }) => {
   return (
     <div className="org_cart">
       <div className="stroka_2 name_text mini_text">
-        Наименование организации
+        Наименование организации*
         {editMode ? (
           <input
             type="text"
             name="nameOrg"
             defaultValue={selectedOrg ? selectedOrg.name : "-"}
             onChange={(e) => setName(e.target.value)}
+            //value = {name}
           />
         ) : (
           <label className="inf_bd">
@@ -78,12 +94,13 @@ const InfOrg = observer(({ editMode }) => {
         )}
       </div>
       <div className="stroka_2 name_text mini_text">
-        Населенный пункт
+        Населенный пункт*
         {editMode ? (
           <input
             type="text"
             defaultValue={selectedOrg ? selectedOrg.localityName : "-"}
             onChange={(e) => setLocalityName(e.target.value)}
+            //value = {localityName}
           />
         ) : (
           <label className="inf_bd">
@@ -99,6 +116,7 @@ const InfOrg = observer(({ editMode }) => {
               type="text"
               defaultValue={selectedOrg ? selectedOrg.street : "-"}
               onChange={(e) => setStreet(e.target.value)}
+              //value = {street}
             />
           ) : (
             <label className="inf_bd">
@@ -117,6 +135,7 @@ const InfOrg = observer(({ editMode }) => {
               type="text"
               defaultValue={selectedOrg ? selectedOrg.numb_house : "-"}
               onChange={(e) => setNumb_house(e.target.value)}
+              //value = {numb_house}
             />
           ) : (
             <label className="inf_bd">
@@ -135,6 +154,7 @@ const InfOrg = observer(({ editMode }) => {
               type="text"
               defaultValue={selectedOrg ? selectedOrg.numb_housing : "-"}
               onChange={(e) => setNumb_housing(e.target.value)}
+              //value = {numb_housing}
             />
           ) : (
             <label className="inf_bd">
@@ -153,6 +173,7 @@ const InfOrg = observer(({ editMode }) => {
               type="text"
               defaultValue={selectedOrg ? selectedOrg.numb_flat : "-"}
               onChange={(e) => setNumb_flat(e.target.value)}
+              //value = {numb_flat}
             />
           ) : (
             <label className="inf_bd">
@@ -168,9 +189,8 @@ const InfOrg = observer(({ editMode }) => {
 
       <div
         className="add_type name_text mini_text"
-        onChange={(e) => setType(e.target.value)}
       >
-        Тип организации
+        Тип организации*
         {editMode ? (
           adminOrg.type.map((type, index) => (
             <label style={{ fontSize: "16px" }} key={index}>
@@ -179,7 +199,7 @@ const InfOrg = observer(({ editMode }) => {
                 className="check_type"
                 name="typeOfOrganization"
                 defaultChecked={selectedOrg?.typeOrgName}
-                value={type.name}
+                onChange={(e) => setType_org_name(type.name)}
               />
               {type.name}
             </label>
@@ -203,13 +223,11 @@ const InfOrg = observer(({ editMode }) => {
                 <input
                   type="checkbox"
                   className="check_type"
-                  // name={category.name}
-                  // defaultValue={category.name || ""}
+                  name={category.name}
+                  defaultValue={category.name || ""}
                   defaultChecked={category.checked}
-                  // onChange={() => setCategoryFunction(category.id)}
-                  // defaultChecked={listOfHelpCategoriesSelected.includes(
-                  //   category.name
-                  // )}
+                  checked={category_help_name?.includes(category.name)}
+                  onChange={() => handleCheckboxChange(category.name)}
                 />
                 {category.name}
               </label>
@@ -228,7 +246,7 @@ const InfOrg = observer(({ editMode }) => {
 
       {editMode ? (
         <div className="btn_add_org">
-          <MyButton style={{ height: "25px" }}>
+          <MyButton style={{ height: "25px" }} >
             Создать новую категорию
           </MyButton>
         </div>
@@ -242,6 +260,7 @@ const InfOrg = observer(({ editMode }) => {
           type="text"
           defaultValue={selectedOrg ? selectedOrg.fio_director : ""}
           onChange={(e) => setFio_director(e.target.value)}
+          //value = {fio_director}
         />
       ) : (
         <label className="inf_bd">
@@ -255,12 +274,13 @@ const InfOrg = observer(({ editMode }) => {
 
       <div className="stroka">
         <div className="stroka_2 name_text mini_text">
-          Электронная почта
+          Электронная почта*
           {editMode ? (
             <input
               type="email"
               defaultValue={selectedOrg ? selectedOrg.email : ""}
               onChange={(e) => setEmail(e.target.value)}
+              //value = {email}
             />
           ) : (
             <label className="inf_bd">
@@ -274,12 +294,13 @@ const InfOrg = observer(({ editMode }) => {
         </div>
 
         <div className="stroka_2 name_text mini_text">
-          Телефон
+          Телефон*
           {editMode ? (
             <input
               type="text"
               defaultValue={selectedOrg ? selectedOrg.phone : ""}
               onChange={(e) => setPhone(e.target.value)}
+              //value = {phone}
             />
           ) : (
             <label className="inf_bd">
@@ -298,45 +319,252 @@ const InfOrg = observer(({ editMode }) => {
         {editMode
           ? dayweek.map((day, index) => (
               <>
-                <div className="stroka" key={index}>
-                  <div
-                    className="stroka_2 day name_text mini_text"
-                    value={day}
-                    style={{ flexBasis: "150px" }}
-                  >
-                    {day}
-                  </div>
-                  <div className="stroka">
-                    <input
-                      className="stroka_2"
-                      type="time"
-                      style={{ flexBasis: "80px" }}
-                    ></input>
-                    <input
-                      className="stroka_2"
-                      type="time"
-                      style={{ flexBasis: "80px" }}
-                    ></input>
-                  </div>
-                  <label className="stroka_2">
-                    Выходной <input type="checkbox"></input>
-                  </label>
+                  <div className="stroka" key={index}>
+                    <div
+                      className="stroka_2 day name_text mini_text"
+                      value={day}
+                      style={{ flexBasis: "150px" }}
+                    >
+                      {day}
+                    </div>
+                  
+                    {day === dayweek[0] ? ( <>
+                      <div className="stroka">
+                        <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                          defaultValue={selectedOrg.work_schedule?.monday.time[0]}
+                          onChange={(e) => updateNestedField( "monday", "time", 1 , e.target.value)}
+                        >                          
+                        </input>
+                        <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                          defaultValue={selectedOrg.work_schedule?.monday.time[1]}
+                          onChange={(e) => updateNestedField( "monday", "time", 2 , e.target.value)}
+                        ></input>
+                      <label className="stroka_2">
+                        Выходной <input type="checkbox" 
+                        defaultChecked={selectedOrg.work_schedule?.monday.weekend}
+                          onChange={(e) => updateNestedField( "monday", "weekend", null , e.target.checked)}
+                        ></input>
+                      </label>
+                      </div>
+                
+                      <div className="stroka">
+                        <div className="stroka_2 name_text mini_text">Обед </div>
+                        <div className="stroka">
+                          <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                            defaultValue={selectedOrg.work_schedule?.monday.lunch[0]}
+                            onChange={(e) => updateNestedField( "monday", "lunch", 1 , e.target.value)}
+                          ></input>
+                          <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                            defaultValue={selectedOrg.work_schedule?.monday.lunch[1]}
+                            onChange={(e) => updateNestedField( "monday", "lunch", 2 , e.target.value)}
+                          ></input>
+                        </div>
+                      </div>
+                      </>) : 
+                      ( day === dayweek[1] ? ( <>
+                      <div className="stroka">
+                        <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                          defaultValue={selectedOrg.work_schedule?.tuesday.time[0]}
+                          onChange={(e) => updateNestedField( "tuesday", "time", 1 , e.target.value)}
+                        ></input>
+                        <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                          defaultValue={selectedOrg.work_schedule?.tuesday.time[1]}
+                          onChange={(e) => updateNestedField( "tuesday", "time", 2 , e.target.value)}
+                        ></input>
+                      <label className="stroka_2">
+                        Выходной <input type="checkbox" 
+                        defaultChecked={selectedOrg.work_schedule?.tuesday.weekend} 
+                        onChange={(e) => updateNestedField( "tuesday", "weekend", null , e.target.checked)}
+                        ></input>
+                      </label>
+                      </div>
+                
+                      <div className="stroka">
+                        <div className="stroka_2 name_text mini_text">Обед </div>
+                        <div className="stroka">
+                          <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                            defaultValue={selectedOrg.work_schedule?.tuesday.lunch[0]}
+                            onChange={(e) => updateNestedField( "tuesday", "lunch", 1 , e.target.value)}
+                          ></input>
+                          <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                            defaultValue={selectedOrg.work_schedule?.tuesday.lunch[1]}
+                            onChange={(e) => updateNestedField( "tuesday", "lunch", 2 , e.target.value)}
+                          ></input>
+                        </div>
+                      </div>
+                      </>) :
+                      ( day === dayweek[2] ? ( <>
+                      <div className="stroka">
+                        <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                          defaultValue={selectedOrg.work_schedule?.wednesday.time[0]}
+                          onChange={(e) => updateNestedField( "wednesday", "time", 1 , e.target.value)}
+                        ></input>
+                        <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                          defaultValue={selectedOrg.work_schedule?.wednesday.time[1]}
+                          onChange={(e) => updateNestedField( "wednesday", "time", 2 , e.target.value)}
+                        ></input>
+                      <label className="stroka_2">
+                        Выходной <input type="checkbox" 
+                          defaultChecked={selectedOrg.work_schedule?.wednesday.weekend}
+                          onChange={(e) => updateNestedField( "wednesday", "weekend", null , e.target.checked)}
+                          ></input>
+                      </label>
+                      </div>
+                
+                      <div className="stroka">
+                        <div className="stroka_2 name_text mini_text">Обед </div>
+                        <div className="stroka">
+                          <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                            defaultValue={selectedOrg.work_schedule?.wednesday.lunch[0]}
+                            onChange={(e) => updateNestedField( "wednesday", "lunch", 1 , e.target.value)}
+                          ></input>
+                          <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                            defaultValue={selectedOrg.work_schedule?.wednesday.lunch[1]}
+                            onChange={(e) => updateNestedField( "wednesday", "lunch", 2 , e.target.value)}
+                          ></input>
+                        </div>
+                      </div>
+                      </>) :
+                      ( day === dayweek[3] ? ( <>
+                      <div className="stroka">
+                        <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                          defaultValue={selectedOrg.work_schedule?.thursday.time[0]}
+                          onChange={(e) => updateNestedField( "thursday", "time", 1 , e.target.value)}
+                        ></input>
+                        <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                          defaultValue={selectedOrg.work_schedule?.thursday.time[1]}
+                          onChange={(e) => updateNestedField( "thursday", "time", 2 , e.target.value)}
+                        ></input>
+                      <label className="stroka_2">
+                        Выходной <input type="checkbox" defaultChecked={selectedOrg.work_schedule?.thursday.weekend}
+                                                  onChange={(e) => updateNestedField( "thursday", "weekend", null , e.target.checked)}
+                                                  ></input>
+                      </label>
+                      </div>
+                
+                      <div className="stroka">
+                        <div className="stroka_2 name_text mini_text">Обед </div>
+                        <div className="stroka">
+                          <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                            defaultValue={selectedOrg.work_schedule?.thursday.lunch[0]}
+                            onChange={(e) => updateNestedField( "thursday", "lunch", 1 , e.target.value)}
+                          ></input>
+                          <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                            defaultValue={selectedOrg.work_schedule?.thursday.lunch[1] }
+                            onChange={(e) => updateNestedField( "thursday", "lunch", 2 , e.target.value)}
+                          ></input>
+                        </div>
+                      </div>
+                      </>) :
+                      ( day === dayweek[4] ? ( <>
+                      <div className="stroka">
+                        <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                          defaultValue={selectedOrg.work_schedule?.friday.time[0]}
+                          onChange={(e) => updateNestedField( "friday", "time", 1 , e.target.value)}
+                        ></input>
+                        <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                          defaultValue={selectedOrg.work_schedule?.friday.time[1]}
+                          onChange={(e) => updateNestedField( "friday", "time", 2 , e.target.value)}
+                        ></input>
+                      <label className="stroka_2">
+                        Выходной <input type="checkbox" defaultChecked={selectedOrg.work_schedule?.friday.weekend}
+                                                  onChange={(e) => updateNestedField( "friday", "weekend", null , e.target.checked)}
+                                                  ></input>
+                      </label>
+                      </div>
+                
+                      <div className="stroka">
+                        <div className="stroka_2 name_text mini_text">Обед </div>
+                        <div className="stroka">
+                          <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                            defaultValue={selectedOrg.work_schedule?.friday.lunch[0]}
+                            onChange={(e) => updateNestedField( "friday", "lunch", 1 , e.target.value)}
+                          ></input>
+                          <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                            defaultValue={selectedOrg.work_schedule?.friday.lunch[1]}
+                            onChange={(e) => updateNestedField( "friday", "lunch", 2 , e.target.value)}
+                          ></input>
+                        </div>
+                      </div>
+
+                      </>) :
+                      ( day === dayweek[5] ? ( <>
+                      <div className="stroka">
+                        <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                          defaultValue={selectedOrg.work_schedule?.saturday.time[0]}
+                          onChange={(e) => updateNestedField( "saturday", "time", 1 , e.target.value)}
+                        ></input>
+                        <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                          defaultValue={selectedOrg.work_schedule?.saturday.time[1]}
+                          onChange={(e) => updateNestedField( "saturday", "time", 2 , e.target.value)}
+                        ></input>
+                      <label className="stroka_2">
+                        Выходной <input type="checkbox" defaultChecked={selectedOrg.work_schedule?.saturday.weekend}
+                                                  onChange={(e) => updateNestedField( "saturday", "weekend", null , e.target.checked)}
+                        ></input>
+                      </label>
+                      </div>
+                
+                      <div className="stroka">
+                        <div className="stroka_2 name_text mini_text">Обед </div>
+                        <div className="stroka">
+                          <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                            defaultValue={selectedOrg.work_schedule?.saturday.lunch[0]}
+                            onChange={(e) => updateNestedField( "saturday", "lunch", 1 , e.target.value)}
+                          ></input>
+                          <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                            defaultValue={selectedOrg.work_schedule?.saturday.lunch[1]}
+                            onChange={(e) => updateNestedField( "saturday", "lunch", 2 , e.target.value)}
+                          ></input>
+                        </div>
+                      </div>
+
+                      </>) :
+                      ( day === dayweek[6] ? ( <>
+                      <div className="stroka">
+                        <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                          defaultValue={selectedOrg.work_schedule?.sunday.time[0]}
+                          onChange={(e) => updateNestedField( "sunday", "time", 1 , e.target.value)}
+                        ></input>
+                        <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                          defaultValue={selectedOrg.work_schedule?.sunday.time[1]}
+                          onChange={(e) => updateNestedField( "sunday", "time", 2 , e.target.value)}
+                        ></input>
+                      <label className="stroka_2">
+                        Выходной <input type="checkbox" defaultChecked={selectedOrg.work_schedule?.sunday.weekend} 
+                                                  onChange={(e) => updateNestedField( "sunday", "weekend", null , e.target.checked)}
+                                                  ></input>
+                      </label>
+                      </div>
+                
+                      <div className="stroka">
+                        <div className="stroka_2 name_text mini_text">Обед </div>
+                        <div className="stroka">
+                          <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                            defaultValue={selectedOrg.work_schedule?.sunday.lunch[0]}
+                            onChange={(e) => updateNestedField( "sunday", "lunch", 1 , e.target.value)}
+                          ></input>
+                          <input className="stroka_2" type="time" style={{ flexBasis: "80px" }}
+                            defaultValue={selectedOrg.work_schedule?.sunday.lunch[1]}
+                            onChange={(e) => updateNestedField( "sunday", "lunch", 2 , e.target.value)}
+                          ></input>
+                        </div>
+                      </div>
+            
+                      </>) :
+                        null
+                      )
+                      )
+
+                      ) 
+                      )
+
+                      )
+                      )
+                    }
+                
                 </div>
-                <div className="stroka">
-                  <div className="stroka_2 name_text mini_text">Обед </div>
-                  <div className="stroka">
-                    <input
-                      className="stroka_2"
-                      type="time"
-                      style={{ flexBasis: "80px" }}
-                    ></input>
-                    <input
-                      className="stroka_2"
-                      type="time"
-                      style={{ flexBasis: "80px" }}
-                    ></input>
-                  </div>
-                </div>
+
               </>
             ))
           : selectedOrg.work_schedule
@@ -356,11 +584,11 @@ const InfOrg = observer(({ editMode }) => {
                       <>
                         <div className="stroka">
                           <label>
-                            {selectedOrg.work_schedule.monday.time[0]}
+                            {selectedOrg.work_schedule?.monday.time[0]}
                           </label>
                           {"-"}
                           <label>
-                            {selectedOrg.work_schedule.monday.time[1]}
+                            {selectedOrg.work_schedule?.monday.time[1]}
                           </label>
                         </div>
                         <div className="stroka">
@@ -369,11 +597,11 @@ const InfOrg = observer(({ editMode }) => {
                           </div>
                           <div className="stroka">
                             <label>
-                              {selectedOrg.work_schedule.monday.lunch[0]}
+                              {selectedOrg.work_schedule?.monday.lunch[0]}
                             </label>
                             {"-"}
                             <label>
-                              {selectedOrg.work_schedule.monday.lunch[1]}
+                              {selectedOrg.work_schedule?.monday.lunch[1]}
                             </label>
                           </div>
                         </div>
@@ -578,6 +806,7 @@ const InfOrg = observer(({ editMode }) => {
               type="text"
               defaultValue={selectedOrg ? selectedOrg.additional_data : "--"}
               onChange={(e) => setAdditional_data(e.target.value)}
+              //value = {additional_data}
             />
           </>
         ) : (
@@ -592,29 +821,40 @@ const InfOrg = observer(({ editMode }) => {
       </div>
 
       <div className="name_text mini_text">
-        Координаты
+        Координаты*
         {editMode ? (
           <div className="stroka">
             <div className="stroka_2 name_text mini_text">
               <input
                 type="number"
                 defaultValue={selectedOrg ? selectedOrg.coordinates[0] : ""}
-                step="0.0000000000000000000001"
+                step="0.000000000001"
                 min="0"
                 max="200"
-                onChange={(e) => setCoordinates(e.target.value)}
+                onChange={(e) => updateCoordinates(0, e.target.value)}
+                //value = {coordinates[0]}
               />
             </div>
             <div className="stroka_2 name_text mini_text">
               <input
                 type="number"
                 defaultValue={selectedOrg ? selectedOrg.coordinates[1] : ""}
-                step="0.0000000000000000000001"
+                step="0.000000000001"
                 min="0"
                 max="200"
-                onChange={(e) => setCoordinates(e.target.value)}
+                onChange={(e) => updateCoordinates(1, e.target.value)}
+                //value = {coordinates[1]}
               />
             </div>
+            <div className="stroka_2 name_text mini_text">
+              Показывать на карте*
+              <input
+                type="checkbox"
+                defaultChecked={selectedOrg ? selectedOrg.statusName : ""}
+                value={status_name}
+                onChange={(e) => setStatus_name(e.target.checked)}
+              />
+            </div> 
           </div>
         ) : (
           <div className="stroka">
@@ -636,9 +876,14 @@ const InfOrg = observer(({ editMode }) => {
                   : "--"}
               </label>
             </div>
+            <div className="stroka_2 name_text mini_text">
+              {selectedOrg.statusName ? "Метка видна на карте" : "Метка не видна на карте"}
+            </div>
+            
           </div>
         )}
       </div>
+      
     </div>
   );
 });
