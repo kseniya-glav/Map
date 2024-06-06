@@ -1,18 +1,45 @@
 import { $authHost, $host } from "./index";
 
-export const adding = async (name, locality_name, street, numb_house, numb_housing, numb_flat,
-  type_org_name, fio_director, email, phone, work_schedule,
-  additional_data, coordinates, status_name, category_help_name) => {
-
+export const adding = async (
+  name,
+  locality_name,
+  street,
+  numb_house,
+  numb_housing,
+  numb_flat,
+  type_org_name,
+  fio_director,
+  email,
+  phone,
+  work_schedule,
+  additional_data,
+  coordinates,
+  status_name,
+  category_help_name
+) => {
   const { data } = await $authHost.post("api/org/adding", {
-    name, locality_name, street, numb_house, numb_housing, numb_flat,
-    type_org_name, fio_director, email, phone, work_schedule,
-    additional_data, coordinates, status_name, category_help_name
+    name,
+    locality_name,
+    street,
+    numb_house,
+    numb_housing,
+    numb_flat,
+    type_org_name,
+    fio_director,
+    email,
+    phone,
+    work_schedule,
+    additional_data,
+    coordinates,
+    status_name,
+    category_help_name,
   });
 
-  const { data2 } = await $authHost.post("api/spisokCats/adding",{category_help_name, name} );
+  const { data2 } = await $authHost.post("api/spisokCats/adding", {
+    category_help_name,
+    name,
+  });
 
-  
   return data, data2;
 };
 
@@ -82,15 +109,17 @@ export const deleteOrg = async (id) => {
 };
 
 export const updateOrg = async (id, newData) => {
-
   const { data } = await $authHost.patch(`api/org/update/${id}`, newData);
 
   return data;
 };
 
 export const updateCatHelp = async (name, newData) => {
-
-  const { data } = await $authHost.patch(`api/spisokCats/update`, name, newData);
+  const { data } = await $authHost.patch(
+    `api/spisokCats/update`,
+    name,
+    newData
+  );
 
   return data;
 };

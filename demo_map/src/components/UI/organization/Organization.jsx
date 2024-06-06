@@ -5,7 +5,12 @@ import "./Organization.css";
 import { Context } from "../../../index";
 import BtnForListOrg from "../buttonForList/BtnForListOrg";
 import InfOrg from "./inf/InfOrg";
-import { adding, deleteOrg, updateOrg, updateCatHelp } from "../../../http/orgAPI";
+import {
+  adding,
+  deleteOrg,
+  updateOrg,
+  updateCatHelp,
+} from "../../../http/orgAPI";
 import Modal from "../modal/modal";
 
 const Organization = observer(() => {
@@ -13,16 +18,32 @@ const Organization = observer(() => {
   const [editMode, setEditMode] = useState(false);
 
   const selectedOrg = admin_organization.selectedOrg;
-
   const setMode = () => {
     setEditMode((editMode) => !editMode);
   };
 
-  const CatCheck = admin_organization.spisokCats.find((list) => list.organizationName === selectedOrg?.name)?.categoryName || [];
+  const CatCheck =
+    admin_organization.spisokCats.find(
+      (list) => list.organizationName === selectedOrg?.name
+    )?.categoryName || [];
+
+  const [filterByName, setFilterByName] = useState("");
+  const [filterByTypeOrg, setFilterByTypeOrg] = useState("");
+  const [filterByLocality, setFilterByLocality] = useState("");
+
+  // const [filteraAminOrganizationItems, setFilteraAminOrganizationItems] =
+  //   useState(admin_organization.org);
+
+  const filteraAminOrganizationItems = admin_organization?.org.filter(
+    (org) =>
+      org.name.toLowerCase().includes(filterByName.toLowerCase()) &&
+      org.typeOrgName.includes(filterByTypeOrg) &&
+      org.localityName.includes(filterByLocality)
+  );
 
   const [name, setName] = useState("");
   const [locality_name, setLocality_name] = useState("");
-  const [street, setStreet] = useState("")
+  const [street, setStreet] = useState("");
   const [numb_house, setNumb_house] = useState("");
   const [numb_housing, setNumb_housing] = useState("");
   const [numb_flat, setNumb_flat] = useState("");
@@ -32,18 +53,17 @@ const Organization = observer(() => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [work_schedule, setWork_schedule] = useState({
-    "monday": { "time": ["",""], "lunch":["",""], "weekend": Boolean},
-    "tuesday": { "time": ["",""], "lunch":["",""], "weekend": Boolean},
-    "wednesday": { "time": ["",""], "lunch":["",""], "weekend": Boolean},
-    "thursday": { "time": ["",""], "lunch":["",""], "weekend": Boolean},
-    "friday": { "time": ["",""], "lunch":["",""], "weekend": Boolean},
-    "saturday": { "time": ["",""], "lunch":["",""], "weekend": Boolean},
-    "sunday": { "time": ["",""], "lunch":["",""], "weekend": Boolean}
-    });
+    monday: { time: ["", ""], lunch: ["", ""], weekend: Boolean },
+    tuesday: { time: ["", ""], lunch: ["", ""], weekend: Boolean },
+    wednesday: { time: ["", ""], lunch: ["", ""], weekend: Boolean },
+    thursday: { time: ["", ""], lunch: ["", ""], weekend: Boolean },
+    friday: { time: ["", ""], lunch: ["", ""], weekend: Boolean },
+    saturday: { time: ["", ""], lunch: ["", ""], weekend: Boolean },
+    sunday: { time: ["", ""], lunch: ["", ""], weekend: Boolean },
+  });
   const [additional_data, setAdditional_data] = useState("");
   const [coordinates, setCoordinates] = useState(["", ""]);
   const [status_name, setStatus_name] = useState(false);
-
 
   const [modalActive, setModalActive] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
@@ -62,17 +82,11 @@ const Organization = observer(() => {
   };
 
   const onUpdateOrg = async () => {
-    console.log("Update")
     const data = {};
     const data_cat_help = {};
 
-    // console.log(name, locality_name, street, numb_house, numb_housing, numb_flat, type_org_name,
-    //   fio_director, email, phone, work_schedule, numb_housing, coordinates, status_name
-    // )
-
     if (name && name !== selectedOrg.name) {
       data.name = name;
-      console.log("Update name", name)
     }
     if (locality_name && locality_name !== selectedOrg.localityName) {
       data.locality_name = locality_name;
@@ -91,7 +105,6 @@ const Organization = observer(() => {
     }
     if (type_org_name && type_org_name !== selectedOrg.typeOrgName) {
       data.type_org_name = type_org_name;
-      console.log("Update type org", type_org_name)
     }
     if (fio_director && fio_director !== selectedOrg.fio_director) {
       data.fio_director = fio_director;
@@ -122,16 +135,16 @@ const Organization = observer(() => {
     try {
       if (data) {
         await updateOrg(selectedOrg.id, data);
-        admin_organization.updateOrg(selectedOrg.id, data)
+        admin_organization.updateOrg(selectedOrg.id, data);
       }
-      if (data_cat_help){
+      if (data_cat_help) {
         await updateCatHelp(selectedOrg.name, data_cat_help);
       }
       setEditMode(false);
     } catch (e) {
       alert(e.response.data.message);
     }
-    
+
     setName("");
     setLocality_name("");
     setStreet("");
@@ -143,10 +156,15 @@ const Organization = observer(() => {
     setFio_director("");
     setEmail("");
     setPhone("");
-    setWork_schedule({ "monday": { "time": ["",""], "lunch":["",""], "weekend": Boolean}, "tuesday": { "time": ["",""], "lunch":["",""], "weekend": Boolean},
-      "wednesday": { "time": ["",""], "lunch":["",""], "weekend": Boolean}, "thursday": { "time": ["",""], "lunch":["",""], "weekend": Boolean},
-      "friday": { "time": ["",""], "lunch":["",""], "weekend": Boolean}, "saturday": { "time": ["",""], "lunch":["",""], "weekend": Boolean},
-      "sunday": { "time": ["",""], "lunch":["",""], "weekend": Boolean} });
+    setWork_schedule({
+      monday: { time: ["", ""], lunch: ["", ""], weekend: Boolean },
+      tuesday: { time: ["", ""], lunch: ["", ""], weekend: Boolean },
+      wednesday: { time: ["", ""], lunch: ["", ""], weekend: Boolean },
+      thursday: { time: ["", ""], lunch: ["", ""], weekend: Boolean },
+      friday: { time: ["", ""], lunch: ["", ""], weekend: Boolean },
+      saturday: { time: ["", ""], lunch: ["", ""], weekend: Boolean },
+      sunday: { time: ["", ""], lunch: ["", ""], weekend: Boolean },
+    });
     setAdditional_data("");
     setCoordinates(["", ""]);
     setStatus_name(false);
@@ -156,12 +174,24 @@ const Organization = observer(() => {
 
   const onAddOrg = async () => {
     try {
-      await adding(name, locality_name, street, numb_house, numb_housing, numb_flat,
-        type_org_name, fio_director, email, phone, work_schedule,
-        additional_data, coordinates, status_name, category_help_name);
+      await adding(
+        name,
+        locality_name,
+        street,
+        numb_house,
+        numb_housing,
+        numb_flat,
+        type_org_name,
+        fio_director,
+        email,
+        phone,
+        work_schedule,
+        additional_data,
+        coordinates,
+        status_name,
+        category_help_name
+      );
       setModalActive(false);
-
-
     } catch (e) {
       alert(e.response.data.message);
     }
@@ -177,9 +207,6 @@ const Organization = observer(() => {
     "Воскресенье",
   ];
 
-  console.log("cat",category_help_name)
-  console.log("name type_org_name", name, type_org_name)
-
   return (
     <div className="organization">
       <div className="org_left">
@@ -189,12 +216,19 @@ const Organization = observer(() => {
               className="stroka_2"
               type="text"
               placeholder="Поиск по названию..."
+              onChange={(e) => setFilterByName(e.target.value)}
             ></input>
-            <input
+            <select
+              onChange={(e) => setFilterByLocality(e.target.value)}
               className="stroka_2"
-              type="text"
-              placeholder="Населённый пункт..."
-            ></input>
+            >
+              <option value="">Все населённый пункты</option>
+              {admin_organization.locality.map((locality) => (
+                <option value={locality.name} key={locality.name}>
+                  {locality.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="stroka poisk">
             <select className="stroka_2">
@@ -205,7 +239,10 @@ const Organization = observer(() => {
                 </option>
               ))}
             </select>
-            <select className="stroka_2">
+            <select
+              onChange={(e) => setFilterByTypeOrg(e.target.value)}
+              className="stroka_2"
+            >
               <option value="">Любой тип организации</option>
               {admin_organization.type.map((type) => (
                 <option value={type.name} key={type.id}>
@@ -216,7 +253,7 @@ const Organization = observer(() => {
           </div>
         </div>
         <div className="list_org" disabled={editMode}>
-          {admin_organization.org.map((org) => (
+          {filteraAminOrganizationItems?.map((org) => (
             <BtnForListOrg
               style={{ margin: "4px 0" }}
               key={org.id}
@@ -225,29 +262,46 @@ const Organization = observer(() => {
           ))}
         </div>
         <div className="btn_add">
-          <MyButton onClick={() => setModalActive(true)} >
+          <MyButton onClick={() => setModalActive(true)}>
             Добавить организацию
           </MyButton>
         </div>
       </div>
       <div className="org_rigth">
         <div className="name_text">Карточка организации</div>
-        <InfOrg editMode={editMode} selectedOrg={selectedOrg} 
-         name={selectedOrg.name} setName={setName}
-         localityName={selectedOrg.locality_name} setLocalityName={setLocality_name}
-         street={selectedOrg.street} setStreet={setStreet}
-         numb_house={selectedOrg.numb_house} setNumb_house={setNumb_house}
-         numb_housing={selectedOrg.numb_housing} setNumb_housing={setNumb_housing}
-         numb_flat={selectedOrg.numb_flat} setNumb_flat={setNumb_flat}
-         type_org_name={selectedOrg.type_org_name} setType_org_name={setType_org_name}
-         category_help_name={category_help_name} setCategoryHelpName={setCategoryHelpName}
-         fio_director={selectedOrg.fio_director} setFio_director={setFio_director}
-         email={selectedOrg.email} setEmail={setEmail}
-         phone={selectedOrg.phone} setPhone={setPhone}
-         work_schedule={selectedOrg.work_schedule} setWork_schedule={setWork_schedule}
-         additional_data={selectedOrg.additional_data} setAdditional_data={setAdditional_data}
-         coordinates={selectedOrg.coordinates} setCoordinates={setCoordinates}
-         status_name={selectedOrg.status_name} setStatus_name={setStatus_name}
+        <InfOrg
+          editMode={editMode}
+          selectedOrg={selectedOrg}
+          name={selectedOrg.name}
+          setName={setName}
+          localityName={selectedOrg.localityName}
+          setLocalityName={setLocality_name}
+          street={selectedOrg.street}
+          setStreet={setStreet}
+          numb_house={selectedOrg.numb_house}
+          setNumb_house={setNumb_house}
+          numb_housing={selectedOrg.numb_housing}
+          setNumb_housing={setNumb_housing}
+          numb_flat={selectedOrg.numb_flat}
+          setNumb_flat={setNumb_flat}
+          type_org_name={selectedOrg.typeOrgName}
+          setType_org_name={setType_org_name}
+          category_help_name={category_help_name}
+          setCategoryHelpName={setCategoryHelpName}
+          fio_director={selectedOrg.fio_director}
+          setFio_director={setFio_director}
+          email={selectedOrg.email}
+          setEmail={setEmail}
+          phone={selectedOrg.phone}
+          setPhone={setPhone}
+          work_schedule={selectedOrg.work_schedule}
+          setWork_schedule={setWork_schedule}
+          additional_data={selectedOrg.additional_data}
+          setAdditional_data={setAdditional_data}
+          coordinates={selectedOrg.coordinates}
+          setCoordinates={setCoordinates}
+          status_name={selectedOrg.statusName}
+          setStatus_name={setStatus_name}
         />
 
         <div className="edit_inf">
@@ -260,33 +314,36 @@ const Organization = observer(() => {
           )}
           {selectedOrg && (
             <div className="btn_add">
-              <MyButton onClick={() => {setMode(); setCategoryHelpName(CatCheck);}}>
+              <MyButton
+                onClick={() => {
+                  setMode();
+                  setCategoryHelpName(CatCheck);
+                }}
+              >
                 {!editMode ? "Редактировать" : "Отмена"}
               </MyButton>
             </div>
           )}
           {selectedOrg && (
-            <MyButton onClick={() => setModalDelete(true)}>
-              Удалить
-            </MyButton>
+            <MyButton onClick={() => setModalDelete(true)}>Удалить</MyButton>
           )}
         </div>
 
         <Modal active={modalUpdate} setActive={setModalUpdate} width={"45vw"}>
-            <h1>
-              Редактировать данные организации? <br />
-            </h1>
-            <MyButton onClick={onUpdateOrg}>Редактировать</MyButton>
-            <MyButton onClick={() => setModalUpdate(false)}>Отменить</MyButton>
+          <h1>
+            Редактировать данные организации? <br />
+          </h1>
+          <MyButton onClick={onUpdateOrg}>Редактировать</MyButton>
+          <MyButton onClick={() => setModalUpdate(false)}>Отменить</MyButton>
         </Modal>
 
         <Modal active={modalDelete} setActive={setModalDelete} width={"45vw"}>
-            <h1>
-              Вы действительно хотите удалить организацию <br />«
-              {selectedOrg.name}»?
-            </h1>
-            <MyButton onClick={onDeleteOrg}>Удалить</MyButton>
-            <MyButton onClick={() => setModalDelete(false)}>Отменить</MyButton>
+          <h1>
+            Вы действительно хотите удалить организацию <br />«
+            {selectedOrg.name}»?
+          </h1>
+          <MyButton onClick={onDeleteOrg}>Удалить</MyButton>
+          <MyButton onClick={() => setModalDelete(false)}>Отменить</MyButton>
         </Modal>
       </div>
 
@@ -294,22 +351,39 @@ const Organization = observer(() => {
         <div>
           <form>
             <div className="name_text center">Добавить организацию</div>
-            <InfOrg editMode={true} selectedOrg={""} 
-                     name={name} setName={setName}
-                     localityName={locality_name} setLocalityName={setLocality_name}
-                     street={street} setStreet={setStreet}
-                     numb_house={numb_house} setNumb_house={setNumb_house}
-                     numb_housing={numb_housing} setNumb_housing={setNumb_housing}
-                     numb_flat={numb_flat} setNumb_flat={setNumb_flat}
-                     type_org_name={type_org_name} setType_org_name={setType_org_name}
-                     category_help_name={category_help_name} setCategoryHelpName={setCategoryHelpName}
-                     fio_director={fio_director} setFio_director={setFio_director}
-                     email={email} setEmail={setEmail}
-                     phone={phone} setPhone={setPhone}
-                     work_schedule={work_schedule} setWork_schedule={setWork_schedule}
-                     additional_data={additional_data} setAdditional_data={setAdditional_data}
-                     coordinates={coordinates} setCoordinates={setCoordinates}
-                     status_name={status_name} setStatus_name={setStatus_name}
+            <InfOrg
+              editMode={true}
+              selectedOrg={""}
+              name={name}
+              setName={setName}
+              localityName={locality_name}
+              setLocalityName={setLocality_name}
+              street={street}
+              setStreet={setStreet}
+              numb_house={numb_house}
+              setNumb_house={setNumb_house}
+              numb_housing={numb_housing}
+              setNumb_housing={setNumb_housing}
+              numb_flat={numb_flat}
+              setNumb_flat={setNumb_flat}
+              type_org_name={type_org_name}
+              setType_org_name={setType_org_name}
+              category_help_name={category_help_name}
+              setCategoryHelpName={setCategoryHelpName}
+              fio_director={fio_director}
+              setFio_director={setFio_director}
+              email={email}
+              setEmail={setEmail}
+              phone={phone}
+              setPhone={setPhone}
+              work_schedule={work_schedule}
+              setWork_schedule={setWork_schedule}
+              additional_data={additional_data}
+              setAdditional_data={setAdditional_data}
+              coordinates={coordinates}
+              setCoordinates={setCoordinates}
+              status_name={status_name}
+              setStatus_name={setStatus_name}
             />
           </form>
 
@@ -325,10 +399,7 @@ const Organization = observer(() => {
           </div>
         </div>
       </Modal>
-
-
     </div>
-    
   );
 });
 
