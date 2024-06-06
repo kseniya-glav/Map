@@ -82,7 +82,16 @@ export const deleteOrg = async (id) => {
 };
 
 export const updateOrg = async (id, newData) => {
+
   const { data } = await $authHost.patch(`api/org/update/${id}`, newData);
+
+  return data;
+};
+
+export const updateCatHelp = async (name, newData) => {
+
+  const { data } = await $authHost.patch(`api/spisokCats/update`, name, newData);
+
   return data;
 };
 

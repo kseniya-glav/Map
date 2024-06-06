@@ -16,6 +16,18 @@ class SpisokCatsController {
 
     return res.json(sps);
   }
+
+  async update(req, name, category_help_name) {
+
+    await SpisokCat.destroy({  where: { name: name } });
+
+    const sps = category_help_name?.forEach(categoryName => {
+      SpisokCat.create({categoryName, name})
+    });
+
+    return res.json(sps);
+  }
+
 }
 
 

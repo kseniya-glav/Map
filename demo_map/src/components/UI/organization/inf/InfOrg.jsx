@@ -18,8 +18,10 @@ const InfOrg = observer(({ editMode, selectedOrg,
                             work_schedule, setWork_schedule,
                             additional_data, setAdditional_data,
                             coordinates, setCoordinates,
-                            status_name, setStatus_name
+                            status_name, setStatus_name,
                           }) => {
+
+  console.log("cathelpc",category_help_name)
   const { admin_organization } = useContext(Context);
   const adminOrg = admin_organization;
   //const selectedOrg = adminOrg.selectedOrg;
@@ -31,11 +33,12 @@ const InfOrg = observer(({ editMode, selectedOrg,
   };
 
   const listOfHelpCategoriesSelected =
-    adminOrg.spisokCats.find(
+    admin_organization.spisokCats.find(
       (list) => list.organizationName === selectedOrg?.name
     )?.categoryName || [];
 
-  const allCategory = JSON.parse(JSON.stringify(adminOrg.category));
+  const allCategory = JSON.parse(JSON.stringify(admin_organization.category));
+
   allCategory.forEach((el) => {
     if (listOfHelpCategoriesSelected.includes(el.name)) {
       el.checked = true;
@@ -43,6 +46,7 @@ const InfOrg = observer(({ editMode, selectedOrg,
       el.checked = false;
     }
   });
+ 
 
 
   const handleCheckboxChange = (value) => {
@@ -52,6 +56,7 @@ const InfOrg = observer(({ editMode, selectedOrg,
       setCategoryHelpName([...category_help_name, value]);
     }
   };
+
 
 
   const updateNestedField = (fieldName, nestedFieldName, index, newValue) => {
@@ -74,6 +79,9 @@ const InfOrg = observer(({ editMode, selectedOrg,
     "Суббота",
     "Воскресенье",
   ];
+
+  
+
 
   return (
     <div className="org_cart">
@@ -202,6 +210,7 @@ const InfOrg = observer(({ editMode, selectedOrg,
                 onChange={(e) => setType_org_name(type.name)}
               />
               {type.name}
+              {type_org_name}
             </label>
           ))
         ) : (
@@ -224,11 +233,11 @@ const InfOrg = observer(({ editMode, selectedOrg,
                   type="checkbox"
                   className="check_type"
                   name={category.name}
-                  defaultValue={category.name || ""}
-                  defaultChecked={category.checked}
+                  //defaultValue={category.name || ""}
+                  //defaultChecked={category.checked}
                   checked={category_help_name?.includes(category.name)}
                   onChange={() => handleCheckboxChange(category.name)}
-                />
+                />                
                 {category.name}
               </label>
             ))}

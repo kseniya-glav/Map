@@ -5,7 +5,7 @@ import "./Organization.css";
 import { Context } from "../../../index";
 import BtnForListOrg from "../buttonForList/BtnForListOrg";
 import InfOrg from "./inf/InfOrg";
-import { adding, deleteOrg } from "../../../http/orgAPI";
+import { adding, deleteOrg, updateOrg, updateCatHelp } from "../../../http/orgAPI";
 import Modal from "../modal/modal";
 
 const Organization = observer(() => {
@@ -18,7 +18,8 @@ const Organization = observer(() => {
     setEditMode((editMode) => !editMode);
   };
 
-    
+  const CatCheck = admin_organization.spisokCats.find((list) => list.organizationName === selectedOrg?.name)?.categoryName || [];
+
   const [name, setName] = useState("");
   const [locality_name, setLocality_name] = useState("");
   const [street, setStreet] = useState("")
@@ -60,6 +61,99 @@ const Organization = observer(() => {
     }
   };
 
+  const onUpdateOrg = async () => {
+    console.log("Update")
+    const data = {};
+    const data_cat_help = {};
+
+    // console.log(name, locality_name, street, numb_house, numb_housing, numb_flat, type_org_name,
+    //   fio_director, email, phone, work_schedule, numb_housing, coordinates, status_name
+    // )
+
+    if (name && name !== selectedOrg.name) {
+      data.name = name;
+      console.log("Update name", name)
+    }
+    if (locality_name && locality_name !== selectedOrg.localityName) {
+      data.locality_name = locality_name;
+    }
+    if (street && street !== selectedOrg.street) {
+      data.street = street;
+    }
+    if (numb_house && numb_house !== selectedOrg.numb_house) {
+      data.numb_house = numb_house;
+    }
+    if (numb_housing && numb_housing !== selectedOrg.numb_housing) {
+      data.numb_housing = numb_housing;
+    }
+    if (numb_flat && numb_flat !== selectedOrg.numb_flat) {
+      data.numb_flat = numb_flat;
+    }
+    if (type_org_name && type_org_name !== selectedOrg.typeOrgName) {
+      data.type_org_name = type_org_name;
+      console.log("Update type org", type_org_name)
+    }
+    if (fio_director && fio_director !== selectedOrg.fio_director) {
+      data.fio_director = fio_director;
+    }
+    if (email && email !== selectedOrg.email) {
+      data.email = email;
+    }
+    if (phone && phone !== selectedOrg.phone) {
+      data.phone = phone;
+    }
+    if (work_schedule && work_schedule !== selectedOrg.work_schedule) {
+      data.work_schedule = work_schedule;
+    }
+    if (additional_data && additional_data !== selectedOrg.additional_data) {
+      data.numb_housing = additional_data;
+    }
+    if (coordinates && coordinates !== selectedOrg.coordinates) {
+      data.coordinates = coordinates;
+    }
+    if (status_name && status_name !== selectedOrg.statusName) {
+      data.status_name = status_name;
+    }
+
+    if (category_help_name && category_help_name !== CatCheck) {
+      data_cat_help.category_help_name = category_help_name;
+    }
+
+    try {
+      if (data) {
+        await updateOrg(selectedOrg.id, data);
+        admin_organization.updateOrg(selectedOrg.id, data)
+      }
+      if (data_cat_help){
+        await updateCatHelp(selectedOrg.name, data_cat_help);
+      }
+      setEditMode(false);
+    } catch (e) {
+      alert(e.response.data.message);
+    }
+    
+    setName("");
+    setLocality_name("");
+    setStreet("");
+    setNumb_house("");
+    setNumb_housing("");
+    setNumb_flat("");
+    setType_org_name("");
+    setCategoryHelpName([]);
+    setFio_director("");
+    setEmail("");
+    setPhone("");
+    setWork_schedule({ "monday": { "time": ["",""], "lunch":["",""], "weekend": Boolean}, "tuesday": { "time": ["",""], "lunch":["",""], "weekend": Boolean},
+      "wednesday": { "time": ["",""], "lunch":["",""], "weekend": Boolean}, "thursday": { "time": ["",""], "lunch":["",""], "weekend": Boolean},
+      "friday": { "time": ["",""], "lunch":["",""], "weekend": Boolean}, "saturday": { "time": ["",""], "lunch":["",""], "weekend": Boolean},
+      "sunday": { "time": ["",""], "lunch":["",""], "weekend": Boolean} });
+    setAdditional_data("");
+    setCoordinates(["", ""]);
+    setStatus_name(false);
+
+    setModalUpdate(false);
+  };
+
   const onAddOrg = async () => {
     try {
       await adding(name, locality_name, street, numb_house, numb_housing, numb_flat,
@@ -82,6 +176,9 @@ const Organization = observer(() => {
     "Суббота",
     "Воскресенье",
   ];
+
+  console.log("cat",category_help_name)
+  console.log("name type_org_name", name, type_org_name)
 
   return (
     <div className="organization">
@@ -135,7 +232,6 @@ const Organization = observer(() => {
       </div>
       <div className="org_rigth">
         <div className="name_text">Карточка организации</div>
-
         <InfOrg editMode={editMode} selectedOrg={selectedOrg} 
          name={selectedOrg.name} setName={setName}
          localityName={selectedOrg.locality_name} setLocalityName={setLocality_name}
@@ -144,7 +240,7 @@ const Organization = observer(() => {
          numb_housing={selectedOrg.numb_housing} setNumb_housing={setNumb_housing}
          numb_flat={selectedOrg.numb_flat} setNumb_flat={setNumb_flat}
          type_org_name={selectedOrg.type_org_name} setType_org_name={setType_org_name}
-         category_help_name={selectedOrg.category_help_name} setCategoryHelpName={setCategoryHelpName}
+         category_help_name={category_help_name} setCategoryHelpName={setCategoryHelpName}
          fio_director={selectedOrg.fio_director} setFio_director={setFio_director}
          email={selectedOrg.email} setEmail={setEmail}
          phone={selectedOrg.phone} setPhone={setPhone}
@@ -157,12 +253,14 @@ const Organization = observer(() => {
         <div className="edit_inf">
           {editMode && (
             <div className="btn_add">
-              <MyButton>Сохранить</MyButton>
+              <MyButton onClick={() => setModalUpdate(true)}>
+                Сохранить
+              </MyButton>
             </div>
           )}
           {selectedOrg && (
             <div className="btn_add">
-              <MyButton onClick={() => setMode()}>
+              <MyButton onClick={() => {setMode(); setCategoryHelpName(CatCheck);}}>
                 {!editMode ? "Редактировать" : "Отмена"}
               </MyButton>
             </div>
@@ -173,6 +271,14 @@ const Organization = observer(() => {
             </MyButton>
           )}
         </div>
+
+        <Modal active={modalUpdate} setActive={setModalUpdate} width={"45vw"}>
+            <h1>
+              Редактировать данные организации? <br />
+            </h1>
+            <MyButton onClick={onUpdateOrg}>Редактировать</MyButton>
+            <MyButton onClick={() => setModalUpdate(false)}>Отменить</MyButton>
+        </Modal>
 
         <Modal active={modalDelete} setActive={setModalDelete} width={"45vw"}>
             <h1>
