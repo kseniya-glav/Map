@@ -12,8 +12,8 @@ export const registration = async (fio, email, phone, role, password) => {
   return jwt_decode(data.token);
 };
 
-export const login = async (email, password) => {
-  const { data } = await $host.post("api/user/login", { email, password });
+export const login = async (user) => {
+  const { data } = await $host.post("api/user/login", user);
   localStorage.setItem("token", data.token);
   return jwt_decode(data.token);
 };

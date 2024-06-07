@@ -40,6 +40,30 @@ div[disabled] {
   user-select: none;
 }
 
+form {
+  div.container-with-validation {
+    height: 60px;
+
+    span.validation-error {
+      color: #da0101;
+    }
+  }
+
+  input[type="submit"] {
+    align-self: flex-end;
+    width: auto;
+    padding: 3px 20px 3px 20px;
+    height: auto;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  input[type="submit"]:disabled {
+    opacity: 0.5;
+    cursor: auto;
+  }
+}
+
 /* 
 body::-webkit-scrollbar {
     width: 15px;   
