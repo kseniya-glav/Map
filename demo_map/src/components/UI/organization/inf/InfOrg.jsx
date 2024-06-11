@@ -248,7 +248,6 @@ const InfOrg = observer(
                   onChange={(e) => setType_org_name(type.name)}
                 />
                 {type.name}
-                {type_org_name}
               </label>
             ))
           ) : (

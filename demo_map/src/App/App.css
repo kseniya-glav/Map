@@ -43,10 +43,10 @@ div[disabled] {
 form {
   div.container-with-validation {
     height: 60px;
+  }
 
-    span.validation-error {
-      color: #da0101;
-    }
+  span.validation-error {
+    color: #da0101;
   }
 
   input[type="submit"] {

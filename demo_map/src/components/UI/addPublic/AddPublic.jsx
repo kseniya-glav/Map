@@ -1,102 +1,263 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../../../index";
-import MyButton from "../myButton/MyButton";
 import "./AddPublic.css";
 import { observer } from "mobx-react-lite";
 
+import { useForm } from "react-hook-form";
+
 const AddPublic = observer(() => {
   const { organization } = useContext(Context);
+  const [additionalCategory, setAdditionalCategory] = useState("");
 
-  // const type_organization = [ 'Государственная', 'Некоммерческая']
-  // const category = ['Бесплатные (или дешевле, чем в магазинах) одежда и предметы первой необходимости',
-  //             'Бесплатные продукты или готовая еда',
-  //             'Бесплатная юридическая консультация',
-  //             'Бесплатная психологическая помощь',
-  //             'Кризисное жилье',
-  //             'Социальное сопровождение',
-  //             'Льготы и пособия',
-  //             'Профессиональное обучение',
-  //             'Бесплатное предоставление витаминов',
-  //             'Социальный прокат средств безопасности'
-  //         ]
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm({
+    mode: "all",
+  });
+
+  const onSubmit = async (enteredData) => {
+    console.log(enteredData);
+  };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "flex-end",
-        marginBottom: "20px",
-      }}
-    >
-      <div className="addPublic">
-        <div className="mail_public">
-          <div className="name_text">Контакты для обратной связи</div>
-          <div className="mail_public_group">
-            <div className="name_text mini_text">Электронная почта</div>
-            <input type="email"></input>
-            <div className="name_text mini_text">Телефон</div>
-            <input type="tel"></input>
-          </div>
-        </div>
-        <div className="info_organization">
-          <div className="name_text">Информация об организации</div>
-          <div className="info_organization_group">
-            <div className="name_text mini_text">Наименование</div>
-            <input type="text"></input>
-            <div className="name_text mini_text">Электронная почта</div>
-            <input type="email"></input>
-            <div className="name_text mini_text">Телефон</div>
-            <input type="tel"></input>
-            <div className="name_text mini_text">Населенный пункт</div>
-            <input type="text"></input>
-            <div className="name_text mini_text">Улица</div>
-            <input type="text"></input>
-            <div className="name_text mini_text">Дом</div>
-            <input type="number"></input>
-            <div className="name_text mini_text">Корпус</div>
-            <input type="number"></input>
-            <div className="name_text mini_text">Квартира</div>
-            <input type="number"></input>
-            <div className="name_text mini_text type_org">
-              Тип организации
-              {organization.type.map((type) => (
-                <label style={{ fontSize: "16px" }} key={type.id}>
-                  <input
-                    type="checkbox"
-                    className="check_type"
-                    value={type.name}
-                  />
-                  {type.name}
-                </label>
-              ))}
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "flex-end",
+          marginBottom: "20px",
+        }}
+      >
+        <div className="addPublic">
+          <div className="mail_public">
+            <div className="name_text">Контакты для обратной связи</div>
+            <div className="mail_public_group">
+              <div className="container-with-validation">
+                <label className="name_text mini_text">Электронная почта</label>
+                <input
+                  {...register("emailUser", {
+                    required: "Поле обязательно к заполнению",
+                    pattern: {
+                      value:
+                        /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu,
+                      message: "Некорректное значение для почты",
+                    },
+                  })}
+                  type="text"
+                />
+                {errors.emailUser && (
+                  <span className="validation-error">
+                    {errors?.emailUser?.message || ""}
+                  </span>
+                )}
+              </div>
+
+              <div className="container-with-validation">
+                <label className="name_text mini_text">Телефон</label>
+                <input
+                  {...register("phoneUser", {
+                    required: "Поле обязательно к заполнению",
+                  })}
+                  type="text"
+                />
+                {errors.phoneUser && (
+                  <span className="validation-error">
+                    {errors?.phoneUser?.message || ""}
+                  </span>
+                )}
+              </div>
             </div>
-            <div className="name_text mini_text">
-              Категория помощи
-              <div className="category_org">
-                {organization.category.map((category) => (
-                  <label style={{ fontSize: "16px" }} key={category.id}>
+          </div>
+          <div className="info_organization">
+            <div className="name_text">Информация об организации</div>
+            <div className="info_organization_group">
+              <div className="container-with-validation">
+                <label className="name_text mini_text">Наименование</label>
+                <input
+                  {...register("nameOrg", {
+                    required: "Поле обязательно к заполнению",
+                  })}
+                  type="text"
+                />
+                {errors.nameOrg && (
+                  <span className="validation-error">
+                    {errors?.nameOrg?.message || ""}
+                  </span>
+                )}
+              </div>
+
+              <div className="container-with-validation">
+                <label className="name_text mini_text">Электронная почта</label>
+                <input
+                  {...register("emailOrg", {
+                    required: "Поле обязательно к заполнению",
+                    pattern: {
+                      value:
+                        /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu,
+                      message: "Некорректное значение для почты",
+                    },
+                  })}
+                  type="text"
+                />
+                {errors.emailOrg && (
+                  <span className="validation-error">
+                    {errors?.emailOrg?.message || ""}
+                  </span>
+                )}
+              </div>
+
+              <div className="container-with-validation">
+                <label className="name_text mini_text">Телефон</label>
+                <input
+                  {...register("phoneOrg", {
+                    required: "Поле обязательно к заполнению",
+                  })}
+                  type="text"
+                />
+                {errors.phoneOrg && (
+                  <span className="validation-error">
+                    {errors?.phoneOrg?.message || ""}
+                  </span>
+                )}
+              </div>
+
+              <div className="container-with-validation">
+                <label className="name_text mini_text">Населенный пункт</label>
+                <input
+                  {...register("localityName", {
+                    required: "Поле обязательно к заполнению",
+                  })}
+                  type="text"
+                />
+                {errors.localityName && (
+                  <span className="validation-error">
+                    {errors?.localityName?.message || ""}
+                  </span>
+                )}
+              </div>
+
+              <div className="container-with-validation">
+                <label className="name_text mini_text">Улица</label>
+                <input
+                  {...register("street", {
+                    required: "Поле обязательно к заполнению",
+                  })}
+                  type="text"
+                />
+                {errors.street && (
+                  <span className="validation-error">
+                    {errors?.street?.message || ""}
+                  </span>
+                )}
+              </div>
+
+              <div className="container-with-validation">
+                <label className="name_text mini_text">Дом</label>
+                <input
+                  {...register("numb_house", {
+                    required: "Поле обязательно к заполнению",
+                  })}
+                  type="text"
+                />
+                {errors.numb_house && (
+                  <span className="validation-error">
+                    {errors?.numb_house?.message || ""}
+                  </span>
+                )}
+              </div>
+
+              <div className="container-with-validation">
+                <label className="name_text mini_text">Корпус</label>
+                <input {...register("numb_housing")} type="text" />
+                {errors.numb_housing && (
+                  <span className="validation-error">
+                    {errors?.numb_housing?.message || ""}
+                  </span>
+                )}
+              </div>
+
+              <div className="container-with-validation">
+                <label className="name_text mini_text">Квартира</label>
+                <input {...register("numb_flat")} type="text" />
+                {errors.numb_flat && (
+                  <span className="validation-error">
+                    {errors?.numb_flat?.message || ""}
+                  </span>
+                )}
+              </div>
+
+              <div className="name_text mini_text type_org">
+                Тип организации
+                {organization.type.map((type, index) => (
+                  <label style={{ fontSize: "16px" }} key={index}>
+                    <input
+                      {...register("typeOrgName", {
+                        required: "Поле обязательно к заполнению",
+                      })}
+                      id={index}
+                      type="radio"
+                      className="check_type"
+                      value={type.name}
+                    />
+                    {type.name}
+                  </label>
+                ))}
+              </div>
+
+              <div className="name_text mini_text">
+                Категория помощи
+                <div className="category_org">
+                  {organization.category.map((category, index) => (
+                    <label style={{ fontSize: "16px" }} key={index}>
+                      <input
+                        {...register("category", {
+                          required: "Выберите хотябы одну категорию",
+                        })}
+                        type="checkbox"
+                        className="check_type"
+                        value={category.name}
+                      />
+                      {category.name}
+                    </label>
+                  ))}
+                  <label>
                     <input
                       type="checkbox"
                       className="check_type"
-                      value={category.name}
+                      {...register("category", {
+                        required: "Выберите хотябы одну категорию",
+                      })}
+                      value={additionalCategory}
                     />
-                    {category.name}
+                    <input
+                      type="text"
+                      style={{ width: "80%", height: "15px" }}
+                      onChange={(e) => setAdditionalCategory(e.target.value)}
+                    />
                   </label>
-                ))}
-                <label>
-                  <input type="checkbox" className="check_type" />
-                  <input type="text" style={{ width: "80%", height: "15px" }} />
-                </label>
+                  {errors.category && (
+                    <span className="validation-error">
+                      {errors?.category?.message || ""}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div className="container-with-validation container-dop">
+                <div className="name_text mini_text">Дополнительные данные</div>
+                <textarea
+                  className="dop"
+                  {...register("additional_information")}
+                />
               </div>
             </div>
-            <div className="name_text mini_text">Дополнительные данные</div>
-            <input className="dop" type="text"></input>
           </div>
         </div>
+        <input type="submit" disabled={!isValid} value={"Отправить"} />
       </div>
-      <MyButton>Отправить</MyButton>
-    </div>
+    </form>
   );
 });
 

@@ -64,8 +64,13 @@ input[type="checkbox"] {
   overflow-y: auto;
 }
 
-.dop {
-  height: 70px;
+.container-dop {
+  height: 80px !important;
+}
+
+textarea.dop {
+  height: 60px !important;
+  width: 100% !important;
 }
 
 .category_org::-webkit-scrollbar {

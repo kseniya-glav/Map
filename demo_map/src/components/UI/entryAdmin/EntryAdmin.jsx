@@ -1,5 +1,4 @@
-import React, { useContext, useState } from "react";
-import MyButton from "../myButton/MyButton";
+import React, { useContext } from "react";
 import "./EntryAdmin.css";
 
 import { useNavigate } from "react-router-dom";
@@ -63,9 +62,8 @@ const EntryAdmin = observer(() => {
                   },
                 })}
                 type="text"
-                placeholder="Введите ваш email..."
               />
-              {errors.email && (
+              {errors?.email && (
                 <span className="validation-error">
                   {errors?.email?.message || ""}
                 </span>
@@ -83,9 +81,8 @@ const EntryAdmin = observer(() => {
                   },
                 })}
                 type="password"
-                placeholder="Введите ваш пароль..."
               />
-              {errors.password && (
+              {errors?.password && (
                 <span className="validation-error">
                   {errors?.password?.message || ""}
                 </span>
