@@ -4,6 +4,7 @@ import "./AddPublic.css";
 import { observer } from "mobx-react-lite";
 
 import { useForm } from "react-hook-form";
+import { fetchAddingNotice } from "../../../http/noticeAPI";
 
 const AddPublic = observer(() => {
   const { organization } = useContext(Context);
@@ -18,7 +19,12 @@ const AddPublic = observer(() => {
   });
 
   const onSubmit = async (enteredData) => {
-    console.log(enteredData);
+    const { emailUser, name, ...message } = enteredData;
+    try {
+      await fetchAddingNotice(emailUser, name, message);
+    } catch (e) {
+      alert(e.response.data.message);
+    }
   };
 
   return (
@@ -56,16 +62,16 @@ const AddPublic = observer(() => {
               </div>
 
               <div className="container-with-validation">
-                <label className="name_text mini_text">Телефон</label>
+                <label className="name_text mini_text">ФИО</label>
                 <input
-                  {...register("phoneUser", {
+                  {...register("name", {
                     required: "Поле обязательно к заполнению",
                   })}
                   type="text"
                 />
-                {errors.phoneUser && (
+                {errors.name && (
                   <span className="validation-error">
-                    {errors?.phoneUser?.message || ""}
+                    {errors?.name?.message || ""}
                   </span>
                 )}
               </div>
