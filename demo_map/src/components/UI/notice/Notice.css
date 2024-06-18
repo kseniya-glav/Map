@@ -130,7 +130,7 @@
   border-radius: 30px;
   padding: 10px 25px 15px 15px;
   background-color: #f3be8e;
-  height: auto;
+  height: 40vh;
   margin-top: 15px;
   overflow-y: auto;
 }
@@ -147,3 +147,19 @@
   align-items: center;
   justify-content: flex-start;
 }
+
+.notice_cart::-webkit-scrollbar {
+  width: 15px;
+}
+
+.notice_cart::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.67);
+  border-radius: 30px;
+}
+
+.notice_cart::-webkit-scrollbar-thumb {
+  background-color: #62d4e3;
+  border-radius: 30px;
+  border: 3px solid rgba(255, 255, 255, 0.67);
+}
+

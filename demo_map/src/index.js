@@ -4,6 +4,7 @@ import App from "./App/App";
 import UserStore from "./store/UserStore";
 import OrgStore from "./store/OrgStore";
 import AdminOrgStore from "./store/AdminOrgStore";
+import NoticeStore from "./store/NoticeStore"
 
 export const Context = createContext(null);
 
@@ -17,6 +18,7 @@ root.render(
       user: new UserStore(),
       organization: new OrgStore(),
       admin_organization: new AdminOrgStore(),
+      noticeStore: new NoticeStore()
     }}
   >
     <App />

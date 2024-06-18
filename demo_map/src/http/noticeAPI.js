@@ -21,3 +21,34 @@ export const fetchAllNotice = async () => {
     return [];
   }
 };
+
+export const deleteNotice = async (id) => {
+  try {
+    await $authHost.delete(`api/notice/delete/${id}`);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
+export const fetchCategory = async () => {
+  try {
+    const { data } = await $host.get("api/category");
+    return data;
+  } catch (err) {
+    return [];
+  }
+};
+
+export const fetchType = async () => {
+  try {
+    const { data } = await $host.get("api/type");
+    return data;
+  } catch (err) {
+    return [];
+  }
+};
+
+
+
+

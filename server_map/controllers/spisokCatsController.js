@@ -24,7 +24,7 @@ class SpisokCatsController {
     const sps = category_help_name?.forEach(categoryName => {
       SpisokCat.create({categoryName, name})
     });
-
+    
     return res.json(sps);
   }
 
